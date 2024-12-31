@@ -8,51 +8,46 @@ import TarjetasCreditoPrincipal from './views/TarjetasCreditoPrincipal';
 import TarjetasCreditoDiferidos from './views/TarjetasCreditoDiferidos';
 import TarjetasCreditoBloqueos from './views/TarjetasCreditoBloqueos';
 import TarjetasCreditoCupos from './views/TarjetasCreditoCupos';
-import Password from './views/Password'; // Nueva ruta para contraseña
-import Register from './views/Register'; // Nueva ruta para registro
+import Password from './views/Password';
+import Register from './views/Register';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Ruta para Login */}
         <Route path="/" element={<Login />} />
-
-        {/* Ruta para la página de contraseña */}
-        <Route path="/Password" element={<Password />} />
-
-        {/* Ruta para la página de registro */}
-        <Route path="/Register" element={<Register />} />
-
-        {/* Ruta para la página principal */}
-        <Route path="/principal" element={<PrivateRoute component={PaginaPrincipal} />} />
-
-        {/* Ruta para Cuentas */}
+        <Route path="/password" element={<Password />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/PaginaPrincipal" element={<PaginaPrincipal />} />
         <Route path="/cuentas" element={<PrivateRoute component={Cuentas} />} />
-
-        {/* Ruta para Detalle de Movimientos de una Cuenta */}
-        <Route path="/cuentas/detalle-movimientos" element={<PrivateRoute component={CuentasDetalleMovimientos} />} />
-
-        {/* Rutas para Tarjetas de Crédito */}
-        <Route path="/tarjetas-credito/principal" element={<PrivateRoute component={TarjetasCreditoPrincipal} />} />
-        <Route path="/tarjetas-credito/diferidos" element={<PrivateRoute component={TarjetasCreditoDiferidos} />} />
-        <Route path="/tarjetas-credito/bloqueos" element={<PrivateRoute component={TarjetasCreditoBloqueos} />} />
-        <Route path="/tarjetas-credito/cupos" element={<PrivateRoute component={TarjetasCreditoCupos} />} />
+        <Route
+          path="/cuentas/detalle-movimientos"
+          element={<PrivateRoute component={CuentasDetalleMovimientos} />}
+        />
+        <Route
+          path="/tarjetas-credito/principal"
+          element={<PrivateRoute component={TarjetasCreditoPrincipal} />}
+        />
+        <Route
+          path="/tarjetas-credito/diferidos"
+          element={<PrivateRoute component={TarjetasCreditoDiferidos} />}
+        />
+        <Route
+          path="/tarjetas-credito/bloqueos"
+          element={<PrivateRoute component={TarjetasCreditoBloqueos} />}
+        />
+        <Route
+          path="/tarjetas-credito/cupos"
+          element={<PrivateRoute component={TarjetasCreditoCupos} />}
+        />
       </Routes>
     </Router>
   );
 };
 
-// PrivateRoute component
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = true; // Aquí deberías verificar tu estado de autenticación
-
-  return (
-    <Route
-      {...rest}
-      element={isAuthenticated ? <Component /> : <Navigate to="/" />}
-    />
-  );
+const PrivateRoute = ({ component: Component }) => {
+  const isAuthenticated = true; // Reemplaza con tu lógica real
+  return isAuthenticated ? <Component /> : <Navigate to="/" />;
 };
 
 export default App;
