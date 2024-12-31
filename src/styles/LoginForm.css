@@ -1,0 +1,198 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 20px; /* Espacio entre columnas */
+    height: 100vh; /* Altura completa */
+    padding: 20px; /* Espacio interno para todo el contenedor */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
+
+.login-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px; /* Espacio interno */
+    margin-left: 20px; /* Ajusta el margen izquierdo si es necesario */
+}
+
+.login-left img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+.login-left h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.login-left p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.login-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc; /* Borde gris inicial */
+    border-radius: 4px;
+    margin-bottom: 20px;
+    outline: none; /* Elimina el borde azul predeterminado */
+    transition: border-color 0.3s ease; /* Efecto suave al cambiar el borde */
+}
+
+.login-form input:focus {
+    border-color: #e06d0e; /* Borde naranja al enfocar */
+    box-shadow: 0 0 5px rgba(224, 109, 14, 0.5); /* Opcional: agrega un efecto sutil de sombra */
+}
+
+
+.login-form button {
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #b6440f;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.login-left a {
+    color: #aa4b0b;
+    text-decoration: underline;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.login-left a:hover {
+    text-decoration: underline;
+}
+
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.login-right img {
+    max-width: 100%;
+    height: auto;
+}
+
+.register-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #70cffc; /* Verde atractivo */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px; /* Espacio con los textos cercanos */
+}
+
+.register-button:hover {
+    background-color: #70cffc; /* Verde más oscuro al pasar el mouse */
+    transform: scale(1.05); /* Pequeño efecto de zoom */
+}
+
+.register-button:active {
+    background-color: #70cffc; /* Verde aún más oscuro al hacer clic */
+    transform: scale(1); /* Elimina el efecto de zoom */
+}
+
+/* Fondo del modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #b6440f;
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #b6440f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: #e06d0e;
+}
+
+
+@media (max-width: 768px) {
+    .login-container {
+        display: flex; /* Cambia el diseño a flexbox */
+        flex-direction: column; /* Acomoda los hijos en una columna */
+        align-items: center; /* Centra el contenido horizontalmente */
+        padding: 20px;
+    }
+
+    .login-right {
+        display: none; /* Oculta la imagen de la derecha */
+    }
+
+    .login-left {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        max-width: none; /* Elimina cualquier limitación de ancho */
+        margin: 0; /* Elimina el margen para centrarse completamente */
+    }
+}
