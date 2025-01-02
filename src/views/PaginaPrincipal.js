@@ -16,7 +16,7 @@ const PaginaPrincipal = () => {
         />
         <h2>Juanito Estupiñan</h2>
         <p>Último ingreso: 11-15-2024 10:03:44</p>
-        <button onClick={() => navigate("/Cuentas.js")}>Cuentas</button>
+        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
         <button onClick={() => navigate("/tarjetas-credito/principal")}>
           Tarjetas de Crédito
         </button>
