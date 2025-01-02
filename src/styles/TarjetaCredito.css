@@ -1,0 +1,260 @@
+/* General adjustments */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f7f7f7;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.sidebar {
+  background-color: #aa4b0b;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.sidebar .profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+}
+
+.sidebar button {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.sidebar button:hover {
+  background-color: #e06d0e;
+}
+
+.sidebar .logout-button {
+  background-color: #666;
+  color: white;
+}
+
+.sidebar .logout-button:hover {
+  background-color: #333;
+}
+
+.main-content {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #aa4b0b;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.diferidos-section {
+  margin-top: 20px;
+}
+
+.diferidos-section h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  border-bottom: 2px solid #aa4b0b;
+  padding-bottom: 10px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.diferidos-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #aa4b0b;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.diferidos-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.diferidos-details {
+  flex: 1;
+  margin-right: 15px;
+}
+
+.diferidos-details h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+
+.diferidos-details p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.diferidos-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.diferidos-actions .action-button {
+  margin-top: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #aa4b0b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.diferidos-actions .action-button:hover {
+  background-color: #db7e3e;
+  transform: scale(1.05);
+}
+
+/* Botones en la misma línea */
+.diferidos-actions .action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.diferidos-details span {
+  display: inline-block;
+  background-color: #f1f1f1;
+  color: #555;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Mejoras visuales */
+.diferidos-card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.diferidos-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.diferidos-details h4 {
+  color: #333;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.diferidos-details p {
+  color: #666;
+}
+
+/* Tamaño de fuente para el nombre de la tarjeta */
+.diferidos-details .card-title {
+  font-size: 22px; /* Aumenta el tamaño del texto de 'Mastercard' */
+  font-weight: bold;
+  color: #333; /* Ajusta el color para que sea legible */
+  margin: 0;
+}
+
+/* Tamaño de fuente para el número de la tarjeta */
+.diferidos-details .card-number {
+  font-size: 18px; /* Aumenta el tamaño del número */
+  color: #555; /* Color más suave que el de la tarjeta */
+  margin-top: 5px;
+}
+
+/* Bloqueos */
+.bloqueos-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #aa4b0b; /* Color rojo para indicar bloqueo */
+}
+
+.bloqueos-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bloqueos-details {
+  flex: 1;
+  margin-right: 15px;
+}
+
+.bloqueos-actions .action-button {
+  margin-top: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #ff5555;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.bloqueos-actions .action-button:disabled {
+  background-color: #cccccc; /* Color gris cuando el botón está deshabilitado */
+}
+
+.tajertabloqueos-button {
+  margin-top: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #aa4b0b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tajertabloqueos-button:hover {
+  background-color: #db7e3e;
+  transform: scale(1.05);
+}

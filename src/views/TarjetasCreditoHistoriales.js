@@ -2,24 +2,24 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/TarjetaCredito.css";
 
-const TarjetasCreditoDiferidos = () => {
+const TarjetasCreditoHistoriales = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Datos estáticos de los diferidos por número de tarjeta
-  const diferidos = {
+  // Datos estáticos de los pagos por número de tarjeta
+  const pagos = {
     "2033300****": [
       {
         tienda: "Tienda XYZ",
         fecha: "10-20-2024",
         montoTotal: "$500.00",
-        cuotasRestantes: "5 de 12",
+        estado: "Realizado", // Pago realizado, no diferido
       },
       {
         tienda: "Supermercado ABC",
         fecha: "09-15-2024",
         montoTotal: "$300.00",
-        cuotasRestantes: "3 de 6",
+        estado: "Diferido", // Pago diferido
       },
     ],
     "4123000****": [
@@ -27,19 +27,19 @@ const TarjetasCreditoDiferidos = () => {
         tienda: "Electrodomésticos 123",
         fecha: "08-10-2024",
         montoTotal: "$600.00",
-        cuotasRestantes: "4 de 10",
+        estado: "Realizado", // Pago realizado, no diferido
       },
       {
         tienda: "Librería El Saber",
         fecha: "07-05-2024",
         montoTotal: "$200.00",
-        cuotasRestantes: "2 de 4",
+        estado: "Diferido", // Pago diferido
       },
       {
         tienda: "Zapatería XYZ",
         fecha: "06-20-2024",
         montoTotal: "$150.00",
-        cuotasRestantes: "1 de 3",
+        estado: "Realizado", // Pago realizado, no diferido
       },
     ],
     "1234567****": [
@@ -47,7 +47,7 @@ const TarjetasCreditoDiferidos = () => {
         tienda: "Restaurante Delicias",
         fecha: "11-10-2024",
         montoTotal: "$450.00",
-        cuotasRestantes: "6 de 12",
+        estado: "Diferido", // Pago diferido
       },
     ],
   };
@@ -79,37 +79,28 @@ const TarjetasCreditoDiferidos = () => {
       {/* Main Content */}
       <div className="main-content">
         <div className="header">
-          <h1>Diferidos de la tarjeta {numeroTarjetaSeleccionada}</h1>
+          <h1>Historial de Pagos de la tarjeta {numeroTarjetaSeleccionada}</h1>
           <div className="user-info">
             <p>
-              <strong>Juanito Estupiñan</strong> Último ingreso: 11-15-2024
-              10:03:44
+              <strong>Juanito Estupiñan</strong> Último ingreso: 11-15-2024 10:03:44
             </p>
           </div>
         </div>
 
-        {/* Diferidos Section */}
+        {/* Historial de Pagos Section */}
         <div className="diferidos-section">
           <div className="card-container">
-            {diferidos[numeroTarjetaSeleccionada]?.map((diferido, index) => (
+            {pagos[numeroTarjetaSeleccionada]?.map((pago, index) => (
               <div key={index} className="diferidos-card">
                 <div className="diferidos-details">
-                  <h4>{diferido.tienda}</h4>
-                  <p>Fecha: {diferido.fecha}</p>
+                  <h4>{pago.tienda}</h4>
+                  <p>Fecha: {pago.fecha}</p>
                   <p>
-                    Monto Total: <strong>{diferido.montoTotal}</strong>
+                    Monto Total: <strong>{pago.montoTotal}</strong>
                   </p>
                   <p>
-                    Cuotas Restantes: <strong>{diferido.cuotasRestantes}</strong>
+                    Estado: <strong>{pago.estado}</strong>
                   </p>
-                </div>
-                <div className="diferidos-actions">
-                  <button
-                    className="action-button"
-                    onClick={() => alert("Solicitar nuevo diferido")}
-                  >
-                    Solicitar Nuevo Diferido
-                  </button>
                 </div>
               </div>
             ))}
@@ -120,4 +111,4 @@ const TarjetasCreditoDiferidos = () => {
   );
 };
 
-export default TarjetasCreditoDiferidos;
+export default TarjetasCreditoHistoriales;

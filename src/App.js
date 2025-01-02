@@ -6,6 +6,7 @@ import Cuentas from './views/Cuentas';
 import CuentasDetalleMovimientos from './views/CuentasDetalleMovimientos';
 import TarjetasCreditoPrincipal from './views/TarjetasCreditoPrincipal';
 import TarjetasCreditoDiferidos from './views/TarjetasCreditoDiferidos';
+import TarjetasCreditoHistoriales from './views/TarjetasCreditoHistoriales';
 import TarjetasCreditoBloqueos from './views/TarjetasCreditoBloqueos';
 import TarjetasCreditoCupos from './views/TarjetasCreditoCupos';
 import Password from './views/Password';
@@ -33,6 +34,10 @@ const App = () => {
           element={<PrivateRoute component={TarjetasCreditoDiferidos} />}
         />
         <Route
+          path="/tarjetas-credito/historial"
+          element={<PrivateRoute component={TarjetasCreditoHistoriales} />}
+        />
+        <Route
           path="/tarjetas-credito/bloqueos"
           element={<PrivateRoute component={TarjetasCreditoBloqueos} />}
         />
@@ -45,9 +50,16 @@ const App = () => {
   );
 };
 
+// const PrivateRoute = ({ component: Component }) => {
+//   const isAuthenticated = true; // Reemplaza con tu lógica real
+//   return isAuthenticated ? <Component /> : <Navigate to="/" />;
+// };
+
 const PrivateRoute = ({ component: Component }) => {
-  const isAuthenticated = true; // Reemplaza con tu lógica real
+  const isAuthenticated = true; // Reemplaza esto con tu lógica real de autenticación
+
   return isAuthenticated ? <Component /> : <Navigate to="/" />;
 };
+
 
 export default App;
