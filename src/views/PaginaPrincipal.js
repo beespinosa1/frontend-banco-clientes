@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/PaginaPrincipal.css";
 
 const PaginaPrincipal = () => {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Mostrar modal de confirmación
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false); // Ocultar modal
+    navigate("/login"); // Redirigir al inicio
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false); // Ocultar modal sin acción
+  };
 
   return (
     <div className="dashboard-container">
@@ -25,7 +39,7 @@ const PaginaPrincipal = () => {
         <hr className="sidebar-divider" />
 
         {/* Botón de cerrar sesión */}
-        <button className="logout-button" onClick={() => navigate("/")}>
+        <button className="logout-button" onClick={handleLogoutClick}>
           Cerrar sesión
         </button>
       </div>
@@ -86,6 +100,24 @@ const PaginaPrincipal = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Cerrar Sesión */}
+      {showLogoutModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¿Estás seguro?</h2>
+            <p>¿Quieres cerrar sesión?</p>
+            <div className="modal-buttons">
+              <button className="copy-button" onClick={confirmLogout}>
+                Cerrar
+              </button>
+              <button className="close-button" onClick={cancelLogout}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

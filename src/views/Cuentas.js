@@ -21,8 +21,9 @@ const Cuentas = () => {
     },
   ]);
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal de compartir
   const [modalContent, setModalContent] = useState("");
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // Modal de cerrar sesión
 
   const openModal = (cuenta) => {
     const content = `Banco BanQuito\n${cuenta.tipo}\n${cuenta.numero}`;
@@ -38,6 +39,19 @@ const Cuentas = () => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(modalContent);
     alert("Contenido copiado al portapapeles");
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Mostrar modal de cerrar sesión
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    navigate("/login"); // Redirigir al inicio
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false); // Cerrar modal sin acción
   };
 
   return (
@@ -56,7 +70,7 @@ const Cuentas = () => {
           Tarjetas de Crédito
         </button>
         <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={() => navigate("/")}>
+        <button className="logout-button" onClick={handleLogoutClick}>
           Cerrar sesión
         </button>
       </div>
@@ -115,24 +129,41 @@ const Cuentas = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal de Compartir */}
       {showModal && (
         <div className="modal">
-            <div className="modal-content">
+          <div className="modal-content">
             <h2>Información de la Cuenta</h2>
             <p>{modalContent}</p>
             <div className="modal-buttons">
-                <button className="copy-button" onClick={copyToClipboard}>
+              <button className="copy-button" onClick={copyToClipboard}>
                 Copiar
-                </button>
-                <button className="close-button" onClick={closeModal}>
+              </button>
+              <button className="close-button" onClick={closeModal}>
                 Cerrar
-                </button>
+              </button>
             </div>
-            </div>
+          </div>
         </div>
-        )}
+      )}
 
+      {/* Modal de Cerrar Sesión */}
+      {showLogoutModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¿Estás seguro?</h2>
+            <p>¿Quieres cerrar sesión?</p>
+            <div className="modal-buttons">
+              <button className="copy-button" onClick={confirmLogout}>
+                Cerrar
+              </button>
+              <button className="close-button" onClick={cancelLogout}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

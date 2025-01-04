@@ -1,20 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../styles/TarjetaCredito.css";
+import "../styles/TarjetaCredito.css";  // Estilos generales
+import "../styles/Modal.css";            // Estilos del modal
 
 const TarjetasCreditoHistoriales = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Datos estáticos de los pagos por número de tarjeta
-  // Datos estáticos de los pagos por número de tarjeta
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleLogoutModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const confirmLogout = () => {
+    setShowModal(false);
+    navigate("/"); // Redirigir a la página de inicio
+  };
+
+  const cancelLogout = () => {
+    setShowModal(false);
+  };
+
   const pagos = {
     "2033300****": [
       {
         tienda: "Tienda XYZ",
         fecha: "10-20-2024",
         montoTotal: "$500.00",
-        estado: "Realizado", // Pago realizado, no diferido
+        estado: "Realizado",
         cuentaDebitada: "1234567890",
         codigoTransaccion: "TXN123456",
         descripcion: "Compra de electrónicos",
@@ -24,7 +38,7 @@ const TarjetasCreditoHistoriales = () => {
         tienda: "Supermercado ABC",
         fecha: "09-15-2024",
         montoTotal: "$300.00",
-        estado: "Diferido", // Pago diferido
+        estado: "Diferido",
         cuentaDebitada: "1234567890",
         codigoTransaccion: "TXN654321",
         descripcion: "Compra de alimentos",
@@ -36,7 +50,7 @@ const TarjetasCreditoHistoriales = () => {
         tienda: "Electrodomésticos 123",
         fecha: "08-10-2024",
         montoTotal: "$600.00",
-        estado: "Realizado", // Pago realizado, no diferido
+        estado: "Realizado",
         cuentaDebitada: "0987654321",
         codigoTransaccion: "TXN789012",
         descripcion: "Compra de electrodomésticos",
@@ -46,7 +60,7 @@ const TarjetasCreditoHistoriales = () => {
         tienda: "Librería El Saber",
         fecha: "07-05-2024",
         montoTotal: "$200.00",
-        estado: "Diferido", // Pago diferido
+        estado: "Diferido",
         cuentaDebitada: "0987654321",
         codigoTransaccion: "TXN210987",
         descripcion: "Compra de libros",
@@ -56,7 +70,7 @@ const TarjetasCreditoHistoriales = () => {
         tienda: "Zapatería XYZ",
         fecha: "06-20-2024",
         montoTotal: "$150.00",
-        estado: "Realizado", // Pago realizado, no diferido
+        estado: "Realizado",
         cuentaDebitada: "0987654321",
         codigoTransaccion: "TXN345678",
         descripcion: "Compra de zapatos",
@@ -68,7 +82,7 @@ const TarjetasCreditoHistoriales = () => {
         tienda: "Restaurante Delicias",
         fecha: "11-10-2024",
         montoTotal: "$450.00",
-        estado: "Diferido", // Pago diferido
+        estado: "Diferido",
         cuentaDebitada: "1122334455",
         codigoTransaccion: "TXN567890",
         descripcion: "Cena en restaurante",
@@ -77,9 +91,8 @@ const TarjetasCreditoHistoriales = () => {
     ],
   };
 
-  // Obtener el número de tarjeta desde la URL o estado
   const numeroTarjetaSeleccionada =
-    location.state?.numeroTarjeta || "2033300****"; // Por defecto, Mastercard
+    location.state?.numeroTarjeta || "2033300****";
 
   return (
     <div className="dashboard-container">
@@ -97,7 +110,7 @@ const TarjetasCreditoHistoriales = () => {
           Tarjetas de Crédito
         </button>
         <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={() => navigate("/")}>
+        <button className="logout-button" onClick={toggleLogoutModal}>
           Cerrar sesión
         </button>
       </div>
@@ -108,7 +121,7 @@ const TarjetasCreditoHistoriales = () => {
           <h1>Historial de Pagos de la tarjeta {numeroTarjetaSeleccionada}</h1>
           <div className="user-info">
             <p>
-              <strong>Juanito Estupiñan</strong> Último ingreso: 11-15-2024
+              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
               10:03:44
             </p>
           </div>
@@ -147,6 +160,24 @@ const TarjetasCreditoHistoriales = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Cierre de Sesión */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>¿Estás seguro?</h3>
+            <p>¿Quieres cerrar sesión?</p>
+            <div className="modal-actions">
+              <button onClick={confirmLogout} className="close-button">
+                Cerrar
+              </button>
+              <button onClick={cancelLogout} className="close-button">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

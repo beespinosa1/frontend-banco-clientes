@@ -10,37 +10,57 @@ const TarjetasCreditoBloqueos = () => {
     {
       tipo: "Mastercard",
       numero: "2033300****",
-      porPagar: 250.00,
-      disponible: 2500.00,
+      porPagar: 250.0,
+      disponible: 2500.0,
       bloqueada: false,
     },
     {
       tipo: "Visa",
       numero: "4123000****",
-      porPagar: 500.00,
-      disponible: 1500.00,
+      porPagar: 500.0,
+      disponible: 1500.0,
       bloqueada: false,
     },
     {
       tipo: "American Express",
       numero: "1234567****",
-      porPagar: 700.00,
-      disponible: 1200.00,
+      porPagar: 700.0,
+      disponible: 1200.0,
       bloqueada: false,
     },
   ]);
 
-  // Función para bloquear la tarjeta
+  const [showModal, setShowModal] = useState({ type: null, index: null });
+
+  // Función para manejar el bloqueo de la tarjeta
   const handleBlockCard = (index) => {
-    const confirmation = window.confirm(
-      "¿Estás seguro de que deseas bloquear esta tarjeta?"
-    );
-    if (confirmation) {
-      const updatedTarjetas = [...tarjetas];
-      updatedTarjetas[index].bloqueada = true;
-      setTarjetas(updatedTarjetas); // Cambiar el estado de la tarjeta a bloqueada
-      alert("La tarjeta ha sido bloqueada exitosamente.");
-    }
+    setShowModal({ type: "block", index });
+  };
+
+  const confirmBlock = () => {
+    const updatedTarjetas = [...tarjetas];
+    updatedTarjetas[showModal.index].bloqueada = true;
+    setTarjetas(updatedTarjetas);
+    setShowModal({ type: null, index: null });
+    alert("La tarjeta ha sido bloqueada exitosamente.");
+  };
+
+  const cancelBlock = () => {
+    setShowModal({ type: null, index: null });
+  };
+
+  // Función para cerrar sesión
+  const handleLogoutClick = () => {
+    setShowModal({ type: "logout" });
+  };
+
+  const confirmLogout = () => {
+    setShowModal({ type: null });
+    navigate("/login"); // Redirigir a la página de inicio
+  };
+
+  const cancelLogout = () => {
+    setShowModal({ type: null });
   };
 
   return (
@@ -59,7 +79,7 @@ const TarjetasCreditoBloqueos = () => {
           Tarjetas de Crédito
         </button>
         <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={() => navigate("/")}>
+        <button className="logout-button" onClick={handleLogoutClick}>
           Cerrar sesión
         </button>
       </div>
@@ -70,7 +90,7 @@ const TarjetasCreditoBloqueos = () => {
           <h1>Gestión de Bloqueos de Tarjeta</h1>
           <div className="user-info">
             <p>
-              <strong>Juanito Estupiñan</strong> Último ingreso: 11-15-2024
+              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
               10:03:44
             </p>
           </div>
@@ -107,6 +127,42 @@ const TarjetasCreditoBloqueos = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Bloqueo de Tarjetas */}
+      {showModal.type === "block" && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¿Estás seguro?</h2>
+            <p>¿Quieres bloquear esta tarjeta?</p>
+            <div className="modal-buttons">
+              <button className="copy-button" onClick={confirmBlock}>
+                Bloquear
+              </button>
+              <button className="close-button" onClick={cancelBlock}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Cierre de Sesión */}
+      {showModal.type === "logout" && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¿Estás seguro?</h2>
+            <p>¿Quieres cerrar sesión?</p>
+            <div className="modal-buttons">
+              <button className="copy-button" onClick={confirmLogout}>
+                Cerrar
+              </button>
+              <button className="close-button" onClick={cancelLogout}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
