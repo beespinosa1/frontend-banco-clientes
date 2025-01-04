@@ -12,18 +12,24 @@ const TarjetasCreditoPrincipal = () => {
       numero: "2033300****",
       porPagar: 250.0,
       disponible: 2500.0,
+      cupoAprobado: 5000.0,
+      fechaCorte: "2023-10-15"
     },
     {
       tipo: "Visa",
       numero: "4123000****",
       porPagar: 500.0,
       disponible: 1500.0,
+      cupoAprobado: 3000.0,
+      fechaCorte: "2023-10-20"
     },
     {
       tipo: "American Express",
       numero: "1234567****",
       porPagar: 700.0,
       disponible: 1200.0,
+      cupoAprobado: 4000.0,
+      fechaCorte: "2023-10-25"
     },
   ]);
 
@@ -84,6 +90,14 @@ const TarjetasCreditoPrincipal = () => {
                     <strong>Disponible: </strong>$
                     {tarjeta.disponible.toFixed(2)}
                   </p>
+                  <p>
+                    <strong>Cupo Total: </strong>$
+                    {tarjeta.cupoAprobado.toFixed(2)}
+                  </p>
+                  <p>
+                    <strong>Fecha de Corte: </strong>
+                    {tarjeta.fechaCorte}
+                  </p>
                   <div className="action-buttons">
                     <button
                       className="action-button"
@@ -103,7 +117,7 @@ const TarjetasCreditoPrincipal = () => {
                         })
                       }
                     >
-                      Ver Historial
+                      Ver Movimientos
                     </button>
                   </div>
                 </div>
