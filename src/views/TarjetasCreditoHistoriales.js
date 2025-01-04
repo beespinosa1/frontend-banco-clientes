@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../styles/TarjetaCredito.css";  // Estilos generales
-import "../styles/Modal.css";            // Estilos del modal
+import "../styles/TarjetaCredito.css";
+import "../styles/Modal.css";
 
 const TarjetasCreditoHistoriales = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const TarjetasCreditoHistoriales = () => {
 
   const confirmLogout = () => {
     setShowModal(false);
-    navigate("/"); // Redirigir a la página de inicio
+    navigate("/login"); // Redirigir a la página de inicio
   };
 
   const cancelLogout = () => {
@@ -96,7 +96,6 @@ const TarjetasCreditoHistoriales = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
       <div className="sidebar">
         <img
           src="https://via.placeholder.com/80"
@@ -115,7 +114,6 @@ const TarjetasCreditoHistoriales = () => {
         </button>
       </div>
 
-      {/* Main Content */}
       <div className="main-content">
         <div className="header">
           <h1>Historial de Pagos de la tarjeta {numeroTarjetaSeleccionada}</h1>
@@ -127,7 +125,6 @@ const TarjetasCreditoHistoriales = () => {
           </div>
         </div>
 
-        {/* Historial de Pagos Section */}
         <div className="diferidos-section">
           <div className="card-container">
             {pagos[numeroTarjetaSeleccionada]?.map((pago, index) => (
@@ -161,13 +158,12 @@ const TarjetasCreditoHistoriales = () => {
         </div>
       </div>
 
-      {/* Modal de Cierre de Sesión */}
       {showModal && (
-        <div className="modal-overlay">
+        <div className="modal">
           <div className="modal-content">
             <h3>¿Estás seguro?</h3>
             <p>¿Quieres cerrar sesión?</p>
-            <div className="modal-actions">
+            <div className="modal-buttons">
               <button onClick={confirmLogout} className="close-button">
                 Cerrar
               </button>
@@ -178,6 +174,7 @@ const TarjetasCreditoHistoriales = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };
