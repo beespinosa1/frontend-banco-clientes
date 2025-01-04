@@ -42,7 +42,7 @@ const Login = () => {
             className="logo-img-foot"
           />
         </div>
-        <h1>Hola, te damos la bienvenida a Banca Personas</h1>
+        <h1>Hola, te damos la bienvenida a Banca Empresas</h1>
         <p>Ingresa a tu Banca en línea</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="username">Usuario</label>

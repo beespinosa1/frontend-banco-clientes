@@ -1,0 +1,388 @@
+/* Estilo global para el body */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100vw; /* Asegura que el ancho no exceda el viewport */
+  overflow-x: hidden; /* Elimina cualquier posible desplazamiento horizontal */
+}
+
+
+.logo-image {
+  display: flex;
+}
+
+.logo-img {
+  width: 100%;
+  max-width: 100px; /* O el tamaño máximo que desees */
+  height: auto; /* Para mantener la relación de aspecto de la imagen */
+  border-radius: 10px; /* Si deseas bordes redondeados */
+}
+
+/* Contenedor principal */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Asegura que el contenedor no se desborde */
+  overflow-x: hidden; /* Evita desplazamiento horizontal */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Ocupa todo el ancho */
+  padding: 0 20px; /* Espaciado lateral general */
+  background-color: #e06d0e; /* Fondo naranja */
+  color: white;
+  box-sizing: border-box; /* Incluye padding en el ancho total */
+}
+
+/* Logo */
+.logo-image {
+  margin-left: 20px; /* Espaciado adicional desde el borde izquierdo */
+}
+
+.logo-img {
+  width: 50px; /* Tamaño del logo */
+  height: 50px;
+  object-fit: cover; /* Mantén proporción */
+}
+
+/* Navegación */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-item {
+  position: relative;
+}
+
+/* Enlaces */
+.nav-item a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+/* Dropdown */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #e06d0e;
+  padding: 10px;
+  list-style: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item:hover .dropdown {
+  display: block;
+}
+
+.dropdown li a {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown li a:hover {
+  background-color: #e06d0e;
+  color: white;
+}
+
+/* Botón Banca Online */
+.btn-primary-nav {
+  background-color: white;
+  color: #e06d0e;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 20px; /* Espaciado desde el borde derecho */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary-nav:hover {
+  background-color: #e06d0e;
+  color: white;
+  border: 1px solid white;
+}
+
+
+  
+/* Estilo para el Header */
+.header {
+  display: flex;
+  justify-content: space-between; /* Espacio entre la parte de texto y la imagen */
+  align-items: center;
+  padding: 20px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Alinea el texto al centro */
+  flex: 1;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.header-buttons {
+  display: flex;
+  flex-direction: column; /* Los botones se apilan uno debajo del otro */
+  gap: 10px; /* Espacio entre los botones */
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: #e06d0e;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.header-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.header-img {
+  width: 100%;
+  max-width: 400px; /* O el tamaño máximo que desees */
+  height: auto; /* Para mantener la relación de aspecto de la imagen */
+  border-radius: 10px; /* Si deseas bordes redondeados */
+}
+
+
+.image-placeholder {
+  width: 300px;
+  height: 300px;
+  background-color: #ccc; /* Color de fondo para simular la imagen */
+  border-radius: 10px;
+}
+
+  
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;  /* Organiza los elementos verticalmente */
+  align-items: center;     /* Centra los elementos horizontalmente */
+  flex: 1 1 200px;
+  max-width: 350px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;      /* Centra el texto dentro de la tarjeta */
+}
+
+.card-image-placeholder {
+  width: 100%;
+  height: 150px;           /* Ajusta la altura de la imagen */
+  background-color: #eee;
+}
+
+.card h3 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 10px 0;
+}
+
+.card-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #e06d0e;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+  
+/* Estilo para la sección destacada */
+.featured {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 40px; /* Espacio entre la sección destacada y las tarjetas */
+}
+
+/* Estilo para el texto dentro de la sección destacada */
+.featured-text {
+  flex: 1;
+  text-align: center;
+}
+
+/* Estilo para la imagen dentro de la sección destacada */
+.featured-image {
+  width: 40%;
+}
+
+.featured h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.featured p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: #e06d0e;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 200px;
+  background-color: #ccc;
+  border-radius: 8px;
+}
+
+/* Estilo para la sección de tarjetas */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: #e06d0e;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 200px; /* Ajusta la altura de la imagen */
+  background-color: #ccc; /* Puedes reemplazarlo con la imagen real */
+  border-radius: 8px;
+}
+
+/* Estilos para el Footer */
+.footer {
+  width: 100%;
+  padding: 2rem 0;
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* Cuatro columnas iguales */
+  grid-gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-column h4 {
+  margin-bottom: 1rem;
+}
+
+.footer-column a {
+  color: white;
+  text-decoration: none;
+  margin: 0.5rem 0;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+.logo-img-foot {
+  width: 100px; /* Ancho deseado */
+  height: 100px; /* Alto igual al ancho para mantener proporción */
+  object-fit: cover; /* Ajusta la imagen para que se adapte al tamaño sin deformarse */
+  border-radius: 5px; /* Opcional: agrega bordes redondeados si lo deseas */
+}
+
+
+.footer-bottom {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+}
+
+/* Contenedor de íconos */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-icons a {
+  text-decoration: none;
+  font-size: 24px;
+  color: #e06d0e; /* Color base del ícono */
+  transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #000; /* Cambia de color al pasar el mouse */
+  transform: scale(1.2); /* Amplía el ícono al pasar el mouse */
+}

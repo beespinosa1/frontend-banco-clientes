@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './views/Home';
 import Login from './views/Login';
+import LoginEmpresa from './views/LoginEmpresa';
 import PaginaPrincipal from './views/PaginaPrincipal';
 import Cuentas from './views/Cuentas';
 import CuentasDetalleMovimientos from './views/CuentasDetalleMovimientos';
@@ -11,19 +13,20 @@ import TarjetasCreditoBloqueos from './views/TarjetasCreditoBloqueos';
 import TarjetasCreditoCupos from './views/TarjetasCreditoCupos';
 import Password from './views/Password';
 import Register from './views/Register';
+import '@fortawesome/fontawesome-free/css/all.min.css'; //iconos
+
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home/>}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="/loginEmpresa" element={<LoginEmpresa />} />
         <Route path="/password" element={<Password />} />
         <Route path="/register" element={<Register />} />
         <Route path="/PaginaPrincipal" element={<PaginaPrincipal />} />
-        <Route
-          path="/cuentas"
-          element={<PrivateRoute component={Cuentas} />}
-        />
+        <Route path="/cuentas" element={<PrivateRoute component={Cuentas} />} />
         <Route
           path="/cuentas/detalle-movimientos"
           element={<PrivateRoute component={CuentasDetalleMovimientos} />}

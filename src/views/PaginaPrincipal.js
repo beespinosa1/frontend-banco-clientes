@@ -25,10 +25,7 @@ const PaginaPrincipal = () => {
         <hr className="sidebar-divider" />
 
         {/* Botón de cerrar sesión */}
-        <button
-          className="logout-button"
-          onClick={() => navigate("/")}
-        >
+        <button className="logout-button" onClick={() => navigate("/")}>
           Cerrar sesión
         </button>
       </div>

@@ -25,7 +25,7 @@ const Cuentas = () => {
   const [modalContent, setModalContent] = useState("");
 
   const openModal = (cuenta) => {
-    const content = `Banco BanCanyon\n${cuenta.tipo}\n${cuenta.numero}`;
+    const content = `Banco BanQuito\n${cuenta.tipo}\n${cuenta.numero}`;
     setModalContent(content);
     setShowModal(true);
   };

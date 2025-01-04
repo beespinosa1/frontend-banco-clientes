@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/PasswordForm.css';
 import sideBanner from '../assets/images/antelope.jpg';
+import LogoImage from "../assets/images/Logo.jpg";
 
 const Password = () => {
     const [password, setPassword] = useState('');
@@ -28,8 +29,13 @@ const Password = () => {
 
     return (
         <div className="login-container">
-            <div className="login-left">
-                <img src="/path/to/logo.png" alt="Logo" />
+            <div className="login-left">            <div className="logo-image">
+          <img
+            src={LogoImage}
+            alt="Imagen descriptiva"
+            className="logo-img-foot"
+          />
+        </div>
                 <p className="security-text">¿Reconoces tu imagen de seguridad?</p>
                 <img
                     src="/path/to/security-image.jpg"
