@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/PaginaPrincipal.css";
+
+import { ItemTarjeta } from "../components/ItemTarjeta";
+import tarjetaService from "../services/tarjetaService";
 
 const PaginaPrincipal = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [tarjetas, setTarjetas] = useState([]);
+
+  useEffect(() => {
+    obtenerTarjetas();
+  }, []);
+
+  const obtenerTarjetas = (async () => {
+    try {
+      const { datos } = await tarjetaService.listarTarjetasCliente();
+      setTarjetas(datos);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  })
 
   const handleLogoutClick = () => {
     setShowLogoutModal(true); // Mostrar modal de confirmación
@@ -80,25 +98,7 @@ const PaginaPrincipal = () => {
 
         {/* Tarjetas Section */}
         <h2>Tarjetas de Crédito</h2>
-        <div className="card">
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Tarjeta"
-            className="card-image"
-          />
-          <div className="details">
-            <h4>Mastercard</h4>
-            <p>2033300****</p>
-          </div>
-          <div className="balance">
-            <p>
-              Por Pagar: <strong>$250.00</strong>
-            </p>
-            <p>
-              Disponible: <strong>$2,500.00</strong>
-            </p>
-          </div>
-        </div>
+        {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} key={index} />)}
       </div>
 
       {/* Modal de Cerrar Sesión */}
