@@ -1,37 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { listarTarjetas } from "../services/tarjetaService.js"; // Importar el servicio
 import "../styles/TarjetaCredito.css";
 
 const TarjetasCreditoPrincipal = () => {
   const navigate = useNavigate();
+  const [tarjetas, setTarjetas] = useState([]); // Estado inicial vacío
+  const [isLoading, setIsLoading] = useState(true); // Para manejar el estado de carga
+  const clienteId = 1; // Reemplaza con el ID dinámico del cliente
 
-  // Objeto que contiene los datos de las tarjetas
-  const [tarjetas] = useState([
-    {
-      tipo: "Mastercard",
-      numero: "2033300****",
-      porPagar: 250.0,
-      disponible: 2500.0,
-      cupoAprobado: 5000.0,
-      fechaCorte: "2023-10-15"
-    },
-    {
-      tipo: "Visa",
-      numero: "4123000****",
-      porPagar: 500.0,
-      disponible: 1500.0,
-      cupoAprobado: 3000.0,
-      fechaCorte: "2023-10-20"
-    },
-    {
-      tipo: "American Express",
-      numero: "1234567****",
-      porPagar: 700.0,
-      disponible: 1200.0,
-      cupoAprobado: 4000.0,
-      fechaCorte: "2023-10-25"
-    },
-  ]);
+  useEffect(() => {
+    const fetchTarjetas = async () => {
+      try {
+        const data = await listarTarjetas(clienteId); // Usar el servicio para obtener datos
+        setTarjetas(data); // Actualiza el estado con los datos de la API
+      } catch (error) {
+        console.error("Error al cargar las tarjetas:", error);
+      } finally {
+        setIsLoading(false); // Finaliza el estado de carga
+      }
+    };
+
+    fetchTarjetas();
+  }, [clienteId]); // Ejecuta el efecto al cargar el componente o si clienteId cambia
 
   return (
     <div className="dashboard-container">
@@ -75,55 +66,61 @@ const TarjetasCreditoPrincipal = () => {
           >
             Gestionar Bloqueos
           </button>
-          <div className="card-container">
-            {tarjetas.map((tarjeta, index) => (
-              <div key={index} className="diferidos-card">
-                <div className="diferidos-details">
-                  <h4 className="card-title">{tarjeta.tipo}</h4>
-                  <p className="card-number">{tarjeta.numero}</p>
-                </div>
-                <div className="diferidos-actions">
-                  <p>
-                    <strong>Por Pagar: </strong>${tarjeta.porPagar.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Disponible: </strong>$
-                    {tarjeta.disponible.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Cupo Total: </strong>$
-                    {tarjeta.cupoAprobado.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Fecha de Corte: </strong>
-                    {tarjeta.fechaCorte}
-                  </p>
-                  <div className="action-buttons">
-                    <button
-                      className="action-button"
-                      onClick={() =>
-                        navigate("/tarjetas-credito/diferidos", {
-                          state: { numeroTarjeta: tarjeta.numero },
-                        })
-                      }
-                    >
-                      Ver Diferidos
-                    </button>
-                    <button
-                      className="action-button"
-                      onClick={() =>
-                        navigate("/tarjetas-credito/historial", {
-                          state: { numeroTarjeta: tarjeta.numero },
-                        })
-                      }
-                    >
-                      Ver Movimientos
-                    </button>
+          {isLoading ? (
+            <p>Cargando tarjetas...</p>
+          ) : tarjetas.length > 0 ? (
+            <div className="card-container">
+              {tarjetas.map((tarjeta, index) => (
+                <div key={index} className="diferidos-card">
+                  <div className="diferidos-details">
+                    <h4 className="card-title">{tarjeta.tipo}</h4>
+                    <p className="card-number">{tarjeta.numero}</p>
+                  </div>
+                  <div className="diferidos-actions">
+                    <p>
+                      <strong>Por Pagar: </strong>${tarjeta.porPagar.toFixed(2)}
+                    </p>
+                    <p>
+                      <strong>Disponible: </strong>$
+                      {tarjeta.cupoDisponible.toFixed(2)}
+                    </p>
+                    <p>
+                      <strong>Cupo Total: </strong>$
+                      {tarjeta.cupoAprobado.toFixed(2)}
+                    </p>
+                    <p>
+                      <strong>Fecha de Corte: </strong>
+                      {tarjeta.fechaCorte}
+                    </p>
+                    <div className="action-buttons">
+                      <button
+                        className="action-button"
+                        onClick={() =>
+                          navigate("/tarjetas-credito/diferidos", {
+                            state: { numeroTarjeta: tarjeta.numero },
+                          })
+                        }
+                      >
+                        Ver Diferidos
+                      </button>
+                      <button
+                        className="action-button"
+                        onClick={() =>
+                          navigate("/tarjetas-credito/historial", {
+                            state: { numeroTarjeta: tarjeta.numero },
+                          })
+                        }
+                      >
+                        Ver Movimientos
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p>No hay tarjetas disponibles.</p>
+          )}
         </div>
       </div>
     </div>
