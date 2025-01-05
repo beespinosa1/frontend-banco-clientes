@@ -12,17 +12,22 @@ const TarjetasCreditoPrincipal = () => {
   useEffect(() => {
     const fetchTarjetas = async () => {
       try {
-        const data = await listarTarjetas(clienteId); // Usar el servicio para obtener datos
-        setTarjetas(data); // Actualiza el estado con los datos de la API
+        const data = await listarTarjetas(clienteId);
+  
+        // Si 'data' no es un arreglo, conviértelo en uno para iterar
+        const tarjetas = Array.isArray(data) ? data : [data];
+        setTarjetas(tarjetas);
       } catch (error) {
         console.error("Error al cargar las tarjetas:", error);
+        alert("Error al cargar las tarjetas, por favor intenta de nuevo más tarde.");
       } finally {
-        setIsLoading(false); // Finaliza el estado de carga
+        setIsLoading(false);
       }
     };
-
+  
     fetchTarjetas();
-  }, [clienteId]); // Ejecuta el efecto al cargar el componente o si clienteId cambia
+  }, [clienteId]);
+   
 
   return (
     <div className="dashboard-container">
@@ -44,7 +49,7 @@ const TarjetasCreditoPrincipal = () => {
           Cerrar sesión
         </button>
       </div>
-
+  
       {/* Main Content */}
       <div className="main-content">
         <div className="header">
@@ -56,7 +61,7 @@ const TarjetasCreditoPrincipal = () => {
             </p>
           </div>
         </div>
-
+  
         {/* Tarjetas Section */}
         <div className="diferidos-section">
           <button
@@ -70,6 +75,7 @@ const TarjetasCreditoPrincipal = () => {
             <p>Cargando tarjetas...</p>
           ) : tarjetas.length > 0 ? (
             <div className="card-container">
+              {/* Itera sobre las tarjetas obtenidas */}
               {tarjetas.map((tarjeta, index) => (
                 <div key={index} className="diferidos-card">
                   <div className="diferidos-details">
@@ -78,19 +84,24 @@ const TarjetasCreditoPrincipal = () => {
                   </div>
                   <div className="diferidos-actions">
                     <p>
-                      <strong>Por Pagar: </strong>${tarjeta.porPagar.toFixed(2)}
+                      <strong>Por Pagar: </strong>$
+                      {tarjeta.porPagar ? tarjeta.porPagar.toFixed(2) : "0.00"}
                     </p>
                     <p>
                       <strong>Disponible: </strong>$
-                      {tarjeta.cupoDisponible.toFixed(2)}
+                      {tarjeta.cupoDisponible
+                        ? tarjeta.cupoDisponible.toFixed(2)
+                        : "0.00"}
                     </p>
                     <p>
                       <strong>Cupo Total: </strong>$
-                      {tarjeta.cupoAprobado.toFixed(2)}
+                      {tarjeta.cupoAprobado
+                        ? tarjeta.cupoAprobado.toFixed(2)
+                        : "0.00"}
                     </p>
                     <p>
                       <strong>Fecha de Corte: </strong>
-                      {tarjeta.fechaCorte}
+                      {tarjeta.fechaCorte || "N/A"}
                     </p>
                     <div className="action-buttons">
                       <button
@@ -125,6 +136,7 @@ const TarjetasCreditoPrincipal = () => {
       </div>
     </div>
   );
+  
 };
 
 export default TarjetasCreditoPrincipal;

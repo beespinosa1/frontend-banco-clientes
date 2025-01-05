@@ -6,10 +6,8 @@ const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/tarjetas`;
 // Obtener tarjetas de un cliente
 export const listarTarjetas = async (idCliente) => {
   try {
-    const response = await axios.get(BASE_URL, {
-      params: { idCliente },
-    });
-    return response.data; // Retorna el cuerpo de la respuesta
+    const response = await axios.get(`${BASE_URL}/${idCliente}`);
+    return response.data.datos; // Retorna el cuerpo de la respuesta
   } catch (error) {
     console.error('Error al listar tarjetas:', error);
     throw error;
@@ -20,6 +18,7 @@ export const listarTarjetas = async (idCliente) => {
 export const obtenerTarjeta = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/${id}`);
+    console.log('Datos recibidos:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error al obtener tarjeta:', error);
