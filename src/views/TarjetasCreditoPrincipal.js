@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { listarTarjetas } from "../services/tarjetaService.js"; // Importar el servicio
+import tarjetaService from "../services/tarjetaService.js"; // Importar el servicio
 import "../styles/TarjetaCredito.css";
 
 const TarjetasCreditoPrincipal = () => {
@@ -12,7 +12,7 @@ const TarjetasCreditoPrincipal = () => {
   useEffect(() => {
     const fetchTarjetas = async () => {
       try {
-        const data = await listarTarjetas(clienteId);
+        const data = await tarjetaService.get(clienteId);
   
         // Si 'data' no es un arreglo, conviértelo en uno para iterar
         const tarjetas = Array.isArray(data) ? data : [data];

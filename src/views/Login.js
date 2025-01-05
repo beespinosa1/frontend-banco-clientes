@@ -3,23 +3,42 @@ import { useNavigate } from "react-router-dom";
 import "../styles/LoginForm.css";
 import sideBanner from "../assets/images/antelope.jpg";
 import LogoImage from "../assets/images/Logo.jpg";
+import autenticacionService from "../services/autenticacionService";
+import { LoginUsuarioFormulario } from "../components/LoginUsuarioFormulario";
+import { LoginClaveFormulario } from "../components/LoginClaveFormulario";
 
 const Login = () => {
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState('');
+
+  const [mgsError, setMgsError] = useState("");
+  const [paso, setPaso] = useState("USR");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const isButtonDisabled = username.trim() === "";
 
-  const handleChange = (e) => {
+  const handleChangeUser = (e) => {
     setUsername(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (username === "admin") {
-      navigate("/Password");
-    } else {
+  const handleSubmitUser = async (e) => {
+    try {
+      const credenciales = {
+        usuario: username
+      };
+
+      const { datos } = await autenticacionService.verificarUsuario(credenciales);
+
+      if (!datos.esValido)
+        return;
+
+      setPaso("CON");
+    } catch (er) {
+      const { data } = er;
+      const error = data.error;
+
+      setMgsError(error.mensaje);
       setShowModal(true);
     }
   };
@@ -32,6 +51,31 @@ const Login = () => {
     setShowModal(false);
   };
 
+
+  const handlePasswordValidation = async () => {
+    try {
+      const credenciales = {
+        usuario: username,
+        contrasenia: password
+      }
+
+      const { datos } = await autenticacionService.ingresar(credenciales);
+      localStorage.setItem("clienteId", datos.clienteId);
+      
+      navigate('/PaginaPrincipal');
+    } catch (er) {
+      const { data } = er;
+      const error = data.error;
+
+      setMgsError(error.mensaje);
+      setShowModal(true);
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+};
+
   return (
     <div className="login-container">
       <div className="login-left">
@@ -42,21 +86,14 @@ const Login = () => {
             className="logo-img-foot"
           />
         </div>
-        <h1>Hola, te damos la bienvenida a Banca Personas</h1>
-        <p>Ingresa a tu Banca en línea</p>
-        <form className="login-form" onSubmit={handleSubmit}>
-          <label htmlFor="username">Usuario</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Ingresa tu nombre de usuario"
-            value={username}
-            onChange={handleChange}
-          />
-          <button type="submit" disabled={isButtonDisabled}>
-            Continuar
-          </button>
-        </form>
+        {paso === "USR" && (
+          <LoginUsuarioFormulario handleSubmitUser={handleSubmitUser} username={username} handleChangeUser={handleChangeUser} isButtonDisabled={isButtonDisabled} />
+        )}
+
+        {paso === "CON" && (
+          <LoginClaveFormulario handlePasswordValidation={handlePasswordValidation} password={password} handlePasswordChange={handlePasswordChange} />
+        )}
+
         <a href="/recover">¿Olvidaste tu usuario o quieres desbloquearlo?</a>
         <p>¿Eres cliente y es la primera vez que ingresas?</p>
         <button className="register-button" onClick={handleRegister}>
@@ -73,7 +110,7 @@ const Login = () => {
         <div className="modal">
           <div className="modal-content">
             <h2>Error</h2>
-            <p>No se encuentra registrado</p>
+            <p>{mgsError}</p>
             <button className="close-button" onClick={closeModal}>
               Cerrar
             </button>
