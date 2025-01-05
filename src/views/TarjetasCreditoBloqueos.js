@@ -1,34 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ItemTarjeta } from "../components/ItemTarjetaBloqueos";
+import tarjetaService from "../services/tarjetaService";
 import "../styles/TarjetaCredito.css";
 
 const TarjetasCreditoBloqueos = () => {
   const navigate = useNavigate();
+  const [tarjetas, setTarjetas] = useState([]);
 
-  // Objeto que contiene los datos de las tarjetas
-  const [tarjetas, setTarjetas] = useState([
-    {
-      tipo: "Mastercard",
-      numero: "2033300****",
-      porPagar: 250.0,
-      disponible: 2500.0,
-      bloqueada: false,
-    },
-    {
-      tipo: "Visa",
-      numero: "4123000****",
-      porPagar: 500.0,
-      disponible: 1500.0,
-      bloqueada: false,
-    },
-    {
-      tipo: "American Express",
-      numero: "1234567****",
-      porPagar: 700.0,
-      disponible: 1200.0,
-      bloqueada: false,
-    },
-  ]);
+  useEffect(() => {
+    obtenerTarjetas();
+  }, []);
+
+  const obtenerTarjetas = (async () => {
+    try {
+      const { datos } = await tarjetaService.listarTarjetasCliente();
+      setTarjetas(datos);
+    } catch (error) {
+      console.log(error);
+    }
+  })
 
   const [showModal, setShowModal] = useState({ type: null, index: null });
 
@@ -99,31 +90,7 @@ const TarjetasCreditoBloqueos = () => {
         {/* Bloqueos Section */}
         <div className="bloqueos-section">
           <div className="card-container">
-            {tarjetas.map((tarjeta, index) => (
-              <div key={index} className="bloqueos-card">
-                <div className="bloqueos-details">
-                  <h4 className="card-title">{tarjeta.tipo}</h4>
-                  <p className="card-number">{tarjeta.numero}</p>
-                </div>
-                <div className="bloqueos-actions">
-                  <p>
-                    <strong>Por Pagar: </strong>${tarjeta.porPagar.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Disponible: </strong>${tarjeta.disponible.toFixed(2)}
-                  </p>
-                  <div className="action-buttons">
-                    <button
-                      className="action-button"
-                      onClick={() => handleBlockCard(index)}
-                      disabled={tarjeta.bloqueada}
-                    >
-                      {tarjeta.bloqueada ? "Tarjeta Bloqueada" : "Bloquear Tarjeta"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} handleBlockCard={() => handleBlockCard(index)} key={index} />)}
           </div>
         </div>
       </div>
