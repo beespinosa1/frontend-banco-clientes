@@ -56,14 +56,14 @@ const CuentasDetalleMovimientos = () => {
 
       {/* Main Content */}
       <div className="main-content">
-        <Navbar titulo="Detalle Movimiento" />
+        <Navbar titulo="Cuenta Detalle Movimiento" />
 
         {/* Cuenta Detalles Section */}
         <div className="diferidos-section">
           <div className="card-container">
 
             {cuentaDetalles.map((cuenta, index) => 
-              <ItemCuentaDetalle tipo={cuenta.tipo} fecha={cuenta.fecha} montoTotal={cuenta.monto} estado={cuenta.estado} codigoTransaccion={cuenta.id}  key={index} />)
+              <ItemCuentaDetalle tipo={cuenta.tipo} fecha={cuenta.fechaHora} montoTotal={cuenta.valor} estado={cuenta.estado} codigoTransaccion={cuenta.id} descripcion={cuenta.detalleTransaccion.descripcion} key={index} />)
             }
           </div>
         </div>
