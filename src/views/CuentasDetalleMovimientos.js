@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/TarjetaCredito.css";
 import "../styles/Modal.css";
 
+import { Navbar } from "../components/Navbar";
+import { Sidebar } from "../components/Sidebar";
+
 const CuentasDetalleMovimientos = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -90,34 +93,10 @@ const CuentasDetalleMovimientos = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="sidebar">
-        <img
-          src="https://via.placeholder.com/80"
-          alt="Profile"
-          className="profile-image"
-        />
-        <h2>Juanito Estupiñan</h2>
-        <p>Último ingreso: 11-15-2024 10:03:44</p>
-        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
-        <button onClick={() => navigate("/tarjetas-credito/principal")}>
-          Tarjetas de Crédito
-        </button>
-        <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={handleLogoutClick}>
-          Cerrar sesión
-        </button>
-      </div>
+      <Sidebar />
 
       <div className="main-content">
-        <div className="header">
-          <h1>Detalle Movimientos Cuenta {numeroTarjetaSeleccionada}</h1>
-          <div className="user-info">
-            <p>
-              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
-              10:03:44
-            </p>
-          </div>
-        </div>
+        <Navbar titulo="Detalle Movimiento" />
 
         <div className="diferidos-section">
           <div className="card-container">
