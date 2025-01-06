@@ -22,9 +22,7 @@ export const ItemCuenta = (({ tipo, numero, saldoDisponible, saldoAcreditar, ope
                     <button
                         className="action-button"
                         onClick={() =>
-                            navigate("/cuentas/detalle-movimientos", {
-                                state: { numeroCuenta: numero },
-                            })
+                            navigate("/cuentas/detalle-movimientos/" + cuenta.id)
                         }
                     >
                         Ver Detalles

@@ -1,13 +1,34 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/TarjetaCredito.css";
 import "../styles/Modal.css";
+import { ItemCuentaDetalle } from "../components/ItemCuentaDetalle";
+import transCuentaService from "../services/transCuentaService";
+import { useLocation, useParams } from "react-router-dom";
 
 const CuentasDetalleMovimientos = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [showModal, setShowModal] = useState(false); // Estado para el modal
+  const [showModal, setShowModal] = useState(false);
+
+  const [cuentaDetalles, setCuentaDetalles] = useState([]);
+
+  const {id} = useParams();
+
+  useEffect(() => {
+    obtenerDetalleMovimientos();
+  }, [id]);
+
+  const obtenerDetalleMovimientos = async () => {
+    try {
+      const {datos} = await transCuentaService.listarTransCuentasCliente(id);
+      console.log(datos);
+      setCuentaDetalles(datos);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleLogoutClick = () => {
     setShowModal(true); // Mostrar el modal
@@ -22,69 +43,7 @@ const CuentasDetalleMovimientos = () => {
     setShowModal(false); // Cerrar el modal sin acción
   };
 
-  const pagos = {
-    "2033300****": [
-      {
-        tienda: "Tienda XYZ",
-        fecha: "10-20-2024",
-        montoTotal: "$500.00",
-        estado: "Realizado",
-        codigoTransaccion: "TXN123456",
-        descripcion: "Compra de electrónicos",
-        beneficiario: "Tienda XYZ",
-      },
-      {
-        tienda: "Supermercado ABC",
-        fecha: "09-15-2024",
-        montoTotal: "$300.00",
-        estado: "Diferido",
-        codigoTransaccion: "TXN654321",
-        descripcion: "Compra de alimentos",
-        beneficiario: "Supermercado ABC",
-      },
-    ],
-    "4123000****": [
-      {
-        tienda: "Electrodomésticos 123",
-        fecha: "08-10-2024",
-        montoTotal: "$600.00",
-        estado: "Realizado",
-        codigoTransaccion: "TXN789012",
-        descripcion: "Compra de electrodomésticos",
-        beneficiario: "Electrodomésticos 123",
-      },
-      {
-        tienda: "Librería El Saber",
-        fecha: "07-05-2024",
-        montoTotal: "$200.00",
-        estado: "Diferido",
-        codigoTransaccion: "TXN210987",
-        descripcion: "Compra de libros",
-        beneficiario: "Librería El Saber",
-      },
-      {
-        tienda: "Zapatería XYZ",
-        fecha: "06-20-2024",
-        montoTotal: "$150.00",
-        estado: "Realizado",
-        codigoTransaccion: "TXN345678",
-        descripcion: "Compra de zapatos",
-        beneficiario: "Zapatería XYZ",
-      },
-    ],
-    "1234567****": [
-      {
-        tienda: "Restaurante Delicias",
-        fecha: "11-10-2024",
-        montoTotal: "$450.00",
-        estado: "Diferido",
-        codigoTransaccion: "TXN567890",
-        descripcion: "Cena en restaurante",
-        beneficiario: "Restaurante Delicias",
-      },
-    ],
-  };
-
+  //Obtener el número de cuenta seleccionada
   const numeroTarjetaSeleccionada =
     location.state?.numeroTarjeta || "2033300****";
 
@@ -108,6 +67,7 @@ const CuentasDetalleMovimientos = () => {
         </button>
       </div>
 
+      {/* Main Content */}
       <div className="main-content">
         <div className="header">
           <h1>Detalle Movimientos Cuenta {numeroTarjetaSeleccionada}</h1>
@@ -119,32 +79,13 @@ const CuentasDetalleMovimientos = () => {
           </div>
         </div>
 
+        {/* Cuenta Detalles Section */}
         <div className="diferidos-section">
           <div className="card-container">
-            {pagos[numeroTarjetaSeleccionada]?.map((pago, index) => (
-              <div key={index} className="diferidos-card">
-                <div className="diferidos-details">
-                  <h4>{pago.tienda}</h4>
-                  <p>Fecha: {pago.fecha}</p>
-                  <p>
-                    Monto Total: <strong>{pago.montoTotal}</strong>
-                  </p>
-                  <p>
-                    Estado: <strong>{pago.estado}</strong>
-                  </p>
-                  <p>
-                    Código de Transacción:{" "}
-                    <strong>{pago.codigoTransaccion}</strong>
-                  </p>
-                  <p>
-                    Descripción: <strong>{pago.descripcion}</strong>
-                  </p>
-                  <p>
-                    Beneficiario: <strong>{pago.beneficiario}</strong>
-                  </p>
-                </div>
-              </div>
-            ))}
+
+            {cuentaDetalles.map((cuenta, index) => 
+              <ItemCuentaDetalle tipo={cuenta.tipo} fecha={cuenta.fecha} montoTotal={cuenta.monto} estado={cuenta.estado} codigoTransaccion={cuenta.id}  key={index} />)
+            }
           </div>
         </div>
       </div>

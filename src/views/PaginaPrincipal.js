@@ -4,14 +4,18 @@ import "../styles/PaginaPrincipal.css";
 
 import { ItemTarjeta } from "../components/ItemTarjeta";
 import tarjetaService from "../services/tarjetaService";
+import cuentaService from "../services/cuentaService";
+import { ItemCuentaPrincipal } from "../components/ItemCuentaPrincipal";
 
 const PaginaPrincipal = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [tarjetas, setTarjetas] = useState([]);
+  const [cuentas, setCuentas] = useState([]);
 
   useEffect(() => {
     obtenerTarjetas();
+    obtenerCuentas();
   }, []);
 
   const obtenerTarjetas = (async () => {
@@ -23,6 +27,16 @@ const PaginaPrincipal = () => {
       console.log(error);
     }
   })
+
+  const obtenerCuentas = async () => {
+    try {
+      const { datos } = await cuentaService.listarCuentasCliente();
+      console.log(datos);
+      setCuentas(datos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleLogoutClick = () => {
     setShowLogoutModal(true); // Mostrar modal de confirmación
@@ -76,26 +90,8 @@ const PaginaPrincipal = () => {
 
         {/* Cuentas Section */}
         <h2>Cuentas</h2>
-        <div className="card">
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Cuenta"
-            className="card-image"
-          />
-          <div className="details">
-            <h4>Cuenta de Ahorro</h4>
-            <p>20333000011190</p>
-          </div>
-          <div className="balance">
-            <p>
-              Saldo Disponible: <strong>$50.00</strong>
-            </p>
-            <p>
-              Saldo por Efectivizar: <strong>$220.00</strong>
-            </p>
-          </div>
-        </div>
-
+        {cuentas.map((cuenta, index) => <ItemCuentaPrincipal tipo={cuenta.tipo} numero={cuenta.numero} saldoDisponible={cuenta.saldoDisponible} saldoAcreditar={cuenta.saldoAcreditar} key={index} />)}
+      
         {/* Tarjetas Section */}
         <h2>Tarjetas de Crédito</h2>
         {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} key={index} />)}

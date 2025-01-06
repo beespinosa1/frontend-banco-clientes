@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/PaginaPrincipal" element={<PaginaPrincipal />} />
         <Route path="/cuentas" element={<PrivateRoute component={Cuentas} />} />
         <Route
-          path="/cuentas/detalle-movimientos"
+          path="/cuentas/detalle-movimientos/:id"
           element={<PrivateRoute component={CuentasDetalleMovimientos} />}
         />
         <Route
