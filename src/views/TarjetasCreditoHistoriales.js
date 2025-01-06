@@ -6,6 +6,9 @@ import transaccionDetalleService from "../services/transaccionDetalleService";
 import "../styles/TarjetaCredito.css";
 import "../styles/Modal.css";
 
+import { Navbar } from "../components/Navbar";
+import { Sidebar } from "../components/Sidebar";
+
 const TarjetasCreditoHistoriales = () => {
   const navigate = useNavigate();
   const [tarjetaHistorial, setTarjetaHistorial] = useState([]);
@@ -53,34 +56,10 @@ const TarjetasCreditoHistoriales = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="sidebar">
-        <img
-          src="https://via.placeholder.com/80"
-          alt="Profile"
-          className="profile-image"
-        />
-        <h2>Juanito Estupiñan</h2>
-        <p>Último ingreso: 11-15-2024 10:03:44</p>
-        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
-        <button onClick={() => navigate("/tarjetas-credito/principal")}>
-          Tarjetas de Crédito
-        </button>
-        <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={toggleLogoutModal}>
-          Cerrar sesión
-        </button>
-      </div>
+      <Sidebar />
 
       <div className="main-content">
-        <div className="header">
-          <h1>Historial de Pagos de la tarjeta Mastercard</h1>
-          <div className="user-info">
-            <p>
-              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
-              10:03:44
-            </p>
-          </div>
-        </div>
+        <Navbar titulo={"Historial de Pagos de la tarjeta" + numeroTarjetaSeleccionada} />
 
         <div className="diferidos-section">
           <div className="card-container">

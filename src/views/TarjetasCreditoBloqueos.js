@@ -4,6 +4,9 @@ import { ItemTarjeta } from "../components/ItemTarjetaBloqueos";
 import tarjetaService from "../services/tarjetaService";
 import "../styles/TarjetaCredito.css";
 
+import { Navbar } from "../components/Navbar";
+import { Sidebar } from "../components/Sidebar";
+
 const TarjetasCreditoBloqueos = () => {
   const navigate = useNavigate();
   const [tarjetas, setTarjetas] = useState([]);
@@ -57,36 +60,11 @@ const TarjetasCreditoBloqueos = () => {
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
-      <div className="sidebar">
-        <img
-          src="https://via.placeholder.com/80"
-          alt="Profile"
-          className="profile-image"
-        />
-        <h2>Juanito Estupiñan</h2>
-        <p>Último ingreso: 11-15-2024 10:03:44</p>
-        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
-        <button onClick={() => navigate("/tarjetas-credito/principal")}>
-          Tarjetas de Crédito
-        </button>
-        <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={handleLogoutClick}>
-          Cerrar sesión
-        </button>
-      </div>
+      <Sidebar />
 
       {/* Main Content */}
       <div className="main-content">
-        <div className="header">
-          <h1>Gestión de Bloqueos de Tarjeta</h1>
-          <div className="user-info">
-            <p>
-              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
-              10:03:44
-            </p>
-          </div>
-        </div>
-
+        <Navbar titulo="Gestión de Bloqueos de Tarjeta" />
         {/* Bloqueos Section */}
         <div className="bloqueos-section">
           <div className="card-container">

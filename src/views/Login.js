@@ -61,6 +61,7 @@ const Login = () => {
 
       const { datos } = await autenticacionService.ingresar(credenciales);
       localStorage.setItem("clienteId", datos.clienteId);
+      localStorage.setItem("cliente", JSON.stringify(datos));
       
       navigate('/PaginaPrincipal');
     } catch (er) {

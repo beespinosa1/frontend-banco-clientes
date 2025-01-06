@@ -4,6 +4,9 @@ import { ItemTarjeta } from "../components/ItemTarjetaFull";
 import tarjetaService from "../services/tarjetaService";
 import "../styles/TarjetaCredito.css";
 
+import { Navbar } from "../components/Navbar.js";
+import { Sidebar } from "../components/Sidebar.js";
+
 const TarjetasCreditoPrincipal = () => {
   const navigate = useNavigate();
   const [tarjetas, setTarjetas] = useState([]);
@@ -27,24 +30,8 @@ const TarjetasCreditoPrincipal = () => {
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
-      <div className="sidebar">
-        <img
-          src="https://via.placeholder.com/80"
-          alt="Profile"
-          className="profile-image"
-        />
-        <h2>Juanito Estupiñan</h2>
-        <p>Último ingreso: 11-15-2024 10:03:44</p>
-        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
-        <button onClick={() => navigate("/tarjetas-credito/principal")}>
-          Tarjetas de Crédito
-        </button>
-        <hr className="sidebar-divider" />
-        <button className="logout-button" onClick={() => navigate("/")}>
-          Cerrar sesión
-        </button>
-      </div>
-
+      <Sidebar />
+  
       {/* Main Content */}
       <div className="main-content">
         <div className="header">
@@ -56,7 +43,7 @@ const TarjetasCreditoPrincipal = () => {
             </p>
           </div>
         </div>
-
+  
         {/* Tarjetas Section */}
         <div className="diferidos-section">
           <button
