@@ -40,7 +40,7 @@ const App = () => {
           element={<PrivateRoute component={TarjetasCreditoDiferidos} />}
         />
         <Route
-          path="/tarjetas-credito/historial"
+          path="/tarjetas-credito/historial/:id"
           element={<PrivateRoute component={TarjetasCreditoHistoriales} />}
         />
         <Route

@@ -58,7 +58,7 @@ const TarjetasCreditoPrincipal = () => {
           ) : (tarjetas && tarjetas.length > 0) ? (
             <div className="card-container">
               {/* Itera sobre las tarjetas obtenidas */}
-              {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} fechaCorte={tarjeta.fechaCorte} key={index} />)}
+              {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} fechaCorte={tarjeta.fechaCorte} id={tarjeta.id} key={index} />)}
             </div>
           ) : (
             <p>No hay tarjetas disponibles.</p>

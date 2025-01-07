@@ -10,6 +10,8 @@ import { Sidebar } from "../components/Sidebar";
 const TarjetasCreditoBloqueos = () => {
   const navigate = useNavigate();
   const [tarjetas, setTarjetas] = useState([]);
+  const [tarjetaBloquearId, setTarjetaBloquearId] = useState(null);
+  const [tarjetaActivarId, setTarjetaActivarId] = useState(null);
 
   useEffect(() => {
     obtenerTarjetas();
@@ -25,22 +27,54 @@ const TarjetasCreditoBloqueos = () => {
   })
 
   const [showModal, setShowModal] = useState({ type: null, index: null });
+  const [showUnblockModal, setShowUnblockModal] = useState({ type: null, index: null });
 
   // Función para manejar el bloqueo de la tarjeta
-  const handleBlockCard = (index) => {
-    setShowModal({ type: "block", index });
+
+  const handleUnblockCard = (tarjetaId) => {
+    setTarjetaActivarId(tarjetaId);
+    setShowUnblockModal({ type: "block" });
   };
 
-  const confirmBlock = () => {
-    const updatedTarjetas = [...tarjetas];
-    updatedTarjetas[showModal.index].bloqueada = true;
-    setTarjetas(updatedTarjetas);
-    setShowModal({ type: null, index: null });
-    alert("La tarjeta ha sido bloqueada exitosamente.");
+  const handleBlockCard = (tarjetaId) => {
+    setTarjetaBloquearId(tarjetaId);
+    setShowModal({ type: "block" });
+  };
+
+  const confirmUnblock = async () => {
+    try {
+      const res = await tarjetaService.activarTarjeta(tarjetaActivarId);
+      setShowUnblockModal({ type: null });
+
+      alert("Tarjeta bloqueada exitosamente");
+
+      await obtenerTarjetas();
+    } catch (error) {
+      //
+    }
+  };
+
+  const confirmBlock = async () => {
+    try {
+      const res = await tarjetaService.bloquearTarjeta(tarjetaBloquearId);
+      setShowModal({ type: null });
+
+      alert("Tarjeta bloqueada exitosamente");
+
+      await obtenerTarjetas();
+    } catch (error) {
+      //
+    }
   };
 
   const cancelBlock = () => {
-    setShowModal({ type: null, index: null });
+    setTarjetaBloquearId(null);
+    setShowModal({ type: null });
+  };
+  
+  const cancelUnblock = () => {
+    setTarjetaActivarId(null);
+    setShowUnblockModal({ type: null });
   };
 
   // Función para cerrar sesión
@@ -68,7 +102,7 @@ const TarjetasCreditoBloqueos = () => {
         {/* Bloqueos Section */}
         <div className="bloqueos-section">
           <div className="card-container">
-            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} handleBlockCard={() => handleBlockCard(index)} key={index} />)}
+            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} handleBlockCard={() => handleBlockCard(tarjeta.id)} handleUnblockCard={() => handleUnblockCard(tarjeta.id)} key={index} />)}
           </div>
         </div>
       </div>
@@ -84,6 +118,23 @@ const TarjetasCreditoBloqueos = () => {
                 Bloquear
               </button>
               <button className="close-button" onClick={cancelBlock}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {showUnblockModal.type === "block" && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¿Estás seguro?</h2>
+            <p>¿Quieres desbloquear esta tarjeta?</p>
+            <div className="modal-buttons">
+              <button className="copy-button" onClick={confirmUnblock}>
+                Desbloquear
+              </button>
+              <button className="close-button" onClick={cancelUnblock}>
                 Cancelar
               </button>
             </div>

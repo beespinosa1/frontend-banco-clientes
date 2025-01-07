@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const ItemTarjeta = (({ numero, cupoAprobado, cupoDisponible, estado, handleBlockCard, index}) => {
+export const ItemTarjeta = (({ numero, cupoAprobado, cupoDisponible, estado, handleBlockCard, handleUnblockCard, index}) => {
     const porPagar = cupoAprobado - cupoDisponible;
 
     return (
@@ -19,10 +19,9 @@ export const ItemTarjeta = (({ numero, cupoAprobado, cupoDisponible, estado, han
                 <div className="action-buttons">
                     <button
                         className="action-button"
-                        onClick={handleBlockCard}
-                        disabled={estado !== "PEN"}
+                        onClick={estado === "ACT" ? handleBlockCard : handleUnblockCard}
                     >
-                        {estado === "PEN" ? "Bloquear Tarjeta" : "Tarjeta Bloqueada"}
+                        {estado === "ACT" ? "Bloquear Tarjeta" : "Desbloquear Tarjeta"}
                     </button>
                 </div>
             </div>

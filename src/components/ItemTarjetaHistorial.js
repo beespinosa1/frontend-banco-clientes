@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 
-export const ItemTarjeta = (({ beneficiario, fechaContable, valor, estado, cuentaDebitada, id, descripcion}) => {
+export const ItemTarjeta = (({ historial }) => {
     return (
         <div className="diferidos-card">
             <div className="diferidos-details">
-                <h4>{beneficiario}</h4>
-                <p>Fecha: {fechaContable}</p>
+                <h4>{historial.detalleTransaccion.beneficiario}</h4>
+                <p>Fecha: {historial.fechaHora}</p>
                 <p>
-                    Monto Total: <strong>${valor}</strong>
+                    Monto Total: <strong>${historial.valor}</strong>
                 </p>
                 <p>
-                    Estado: <strong>{estado}</strong>
-                </p>
-                <p>
-                    Cuenta Debitada: <strong>{cuentaDebitada}</strong>
+                    Estado: <strong>{historial.estado}</strong>
                 </p>
                 <p>
                     Código de Transacción:{" "}
-                    <strong>{id}</strong>
+                    <strong>{historial. id}</strong>
                 </p>
                 <p>
-                    Descripción: <strong>{descripcion}</strong>
+                    Descripción: <strong>{historial.detalleTransaccion.descripcion}</strong>
                 </p>
             </div>
         </div>

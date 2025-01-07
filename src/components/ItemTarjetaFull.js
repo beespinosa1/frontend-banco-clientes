@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const ItemTarjeta = (( {numero, cupoAprobado, cupoDisponible, fechaCorte} ) => {
+export const ItemTarjeta = (( {numero, cupoAprobado, cupoDisponible, fechaCorte, id} ) => {
     const navigate = useNavigate();
     const porPagar = cupoAprobado - cupoDisponible;
     return (
@@ -35,19 +35,7 @@ export const ItemTarjeta = (( {numero, cupoAprobado, cupoDisponible, fechaCorte}
                 <button
                 className="action-button"
                 onClick={() =>
-                    navigate("/tarjetas-credito/diferidos", {
-                    state: { numeroTarjeta: numero },
-                    })
-                }
-                >
-                Ver Diferidos
-                </button>
-                <button
-                className="action-button"
-                onClick={() =>
-                    navigate("/tarjetas-credito/historial", {
-                    state: { numeroTarjeta: numero },
-                    })
+                    navigate("/tarjetas-credito/historial/" + id)
                 }
                 >
                 Ver Movimientos

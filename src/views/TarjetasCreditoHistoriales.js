@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { ItemTarjeta } from "../components/ItemTarjetaHistorial";
-import transaccionService from "../services/transaccionService";
-import transaccionDetalleService from "../services/transaccionDetalleService";
+
+import transTarjetaService from "../services/transTarjetaService";
+
 import "../styles/TarjetaCredito.css";
 import "../styles/Modal.css";
 
@@ -14,14 +15,19 @@ const TarjetasCreditoHistoriales = () => {
   const [tarjetaHistorial, setTarjetaHistorial] = useState([]);
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
+  const [numeroTarjetaSeleccionada, setNumeroTarjetaSeleccionada] = useState("")
+
+  const { id } = useParams();
 
   useEffect(() => {
     obtenerTarjetaHistorial();
-  }, []);
+  }, [id]);
 
   const obtenerTarjetaHistorial = (async () => {
     try {
-      const { datos } = await transaccionService.listarTransaccionCliente();
+      const { datos } = await transTarjetaService.listarTransTarjetasCliente(id);
+      console.log(datos);
+      
       // const { datosDetalle } = await transaccionDetalleService.listarTransaccionDetalles();
       // Relacionar las transacciones con sus detalles
       // const historialConDetalles = datos.map((transaccion) => {
@@ -65,13 +71,7 @@ const TarjetasCreditoHistoriales = () => {
           <div className="card-container">
             {tarjetaHistorial.map((tarjetaHistorial, index) =>
               <ItemTarjeta
-                beneficiario={tarjetaHistorial.beneficiario}
-                fechaContable={tarjetaHistorial.fechaContable}
-                valor={tarjetaHistorial.valor}
-                estado={tarjetaHistorial.estado}
-                cuentaDebitada={tarjetaHistorial.cuentaId}
-                id={tarjetaHistorial.id}
-                descripcion={tarjetaHistorial.descripcion}
+                historial={tarjetaHistorial}
                 key={index}
               />
             )}
