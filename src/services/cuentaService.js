@@ -63,3 +63,24 @@ export const inactivarCuenta = async (id) => {
     throw new Error(error.response?.data?.mensaje || "Error al inactivar la cuenta");
   }
 };
+
+// Actualizar una cuenta
+export const actualizarCuenta = async (id, cuentaData) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/${id}`, cuentaData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.mensaje || "Error al actualizar la cuenta");
+  }
+};
+
+// Eliminar una cuenta
+export const eliminarCuenta = async (id) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.mensaje || "Error al eliminar la cuenta");
+  }
+};
+

@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { listarCuentasPorCliente } from "../services/cuentaService"; // Importa tu función del servicio
+import { listarCuentasPorCliente } from "../services/cuentaService";
+import { crearCuenta } from "../services/cuentaService";
+import { actualizarCuenta } from "../services/cuentaService";
+import { eliminarCuenta } from "../services/cuentaService";
 
 const Cuentas = () => {
   const navigate = useNavigate();
 
   const [cuentas, setCuentas] = useState([]); // Estado para las cuentas
+  const [nuevaCuenta, setNuevaCuenta] = useState({
+    tipo: "",
+    numero: "",
+    saldoDisponible: 0,
+    saldoAcreditar: 0,
+  });
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const [error, setError] = useState(null); // Estado de error
   const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
   const [modalContent, setModalContent] = useState(""); // Contenido del modal
   const [showLogoutModal, setShowLogoutModal] = useState(false); // Estado para el modal de logout
 
-  const clienteId = 1; 
+  const clienteId = 1;
 
   useEffect(() => {
     // Llama a la API para obtener las cuentas
@@ -106,10 +115,12 @@ const Cuentas = () => {
                   </div>
                   <div className="diferidos-actions">
                     <p>
-                      <strong>Disponible: </strong>${cuenta.saldoDisponible.toFixed(2)}
+                      <strong>Disponible: </strong>$
+                      {cuenta.saldoDisponible.toFixed(2)}
                     </p>
                     <p>
-                      <strong>Por Efectivizar: </strong>${cuenta.saldoAcreditar.toFixed(2)}
+                      <strong>Por Efectivizar: </strong>$
+                      {cuenta.saldoAcreditar.toFixed(2)}
                     </p>
                     <div className="action-buttons">
                       <button
@@ -175,5 +186,124 @@ const Cuentas = () => {
     </div>
   );
 };
+
+const [nuevaCuenta, setNuevaCuenta] = useState({
+  tipo: "",
+  numero: "",
+  saldoDisponible: 0,
+  saldoAcreditar: 0,
+});
+const [cuentaParaEditar, setCuentaParaEditar] = useState(null); // Cuenta seleccionada para editar
+
+const handleInputChange = (e) => {
+  setNuevaCuenta({ ...nuevaCuenta, [e.target.name]: e.target.value });
+};
+
+const crearCuentaHandler = async () => {
+  try {
+    await crearCuenta(nuevaCuenta);
+    alert("Cuenta creada exitosamente");
+    setNuevaCuenta({
+      tipo: "",
+      numero: "",
+      saldoDisponible: 0,
+      saldoAcreditar: 0,
+    });
+    window.location.reload(); // Recargar la lista
+  } catch (error) {
+    console.error("Error al crear la cuenta:", error);
+    alert(error.message);
+  }
+};
+
+const editarCuentaHandler = (cuenta) => {
+  setCuentaParaEditar(cuenta);
+  setNuevaCuenta(cuenta);
+};
+
+const actualizarCuentaHandler = async () => {
+  try {
+    await actualizarCuenta(cuentaParaEditar.id, nuevaCuenta);
+    alert("Cuenta actualizada exitosamente");
+    setCuentaParaEditar(null);
+    setNuevaCuenta({
+      tipo: "",
+      numero: "",
+      saldoDisponible: 0,
+      saldoAcreditar: 0,
+    });
+    window.location.reload(); // Recargar la lista
+  } catch (error) {
+    console.error("Error al actualizar la cuenta:", error);
+    alert(error.message);
+  }
+};
+
+const eliminarCuentaHandler = async (id) => {
+  if (window.confirm("¿Estás seguro de eliminar esta cuenta?")) {
+    try {
+      await eliminarCuenta(id);
+      alert("Cuenta eliminada exitosamente");
+      window.location.reload(); // Recargar la lista
+    } catch (error) {
+      console.error("Error al eliminar la cuenta:", error);
+      alert(error.message);
+    }
+  }
+};
+
+<div className="form-container">
+  <h3>{cuentaParaEditar ? "Editar Cuenta" : "Crear Cuenta"}</h3>
+  <form onSubmit={(e) => e.preventDefault()}>
+    <label>
+      Tipo de Cuenta:
+      <input
+        type="text"
+        name="tipo"
+        value={nuevaCuenta.tipo}
+        onChange={handleInputChange}
+        required
+      />
+    </label>
+    <label>
+      Número de Cuenta:
+      <input
+        type="text"
+        name="numero"
+        value={nuevaCuenta.numero}
+        onChange={handleInputChange}
+        required
+      />
+    </label>
+    <label>
+      Saldo Disponible:
+      <input
+        type="number"
+        name="saldoDisponible"
+        value={nuevaCuenta.saldoDisponible}
+        onChange={handleInputChange}
+        required
+      />
+    </label>
+    <label>
+      Saldo por Efectivizar:
+      <input
+        type="number"
+        name="saldoAcreditar"
+        value={nuevaCuenta.saldoAcreditar}
+        onChange={handleInputChange}
+        required
+      />
+    </label>
+    <button
+      onClick={cuentaParaEditar ? actualizarCuentaHandler : crearCuentaHandler}
+    >
+      {cuentaParaEditar ? "Actualizar Cuenta" : "Crear Cuenta"}
+    </button>
+    {cuentaParaEditar && (
+      <button onClick={() => setCuentaParaEditar(null)}>Cancelar</button>
+    )}
+  </form>
+</div>;
 
 export default Cuentas;
