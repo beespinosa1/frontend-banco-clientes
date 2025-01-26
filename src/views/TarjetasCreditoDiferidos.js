@@ -10,12 +10,17 @@ import { Sidebar } from "../components/Sidebar";
 
 const TarjetasCreditoDiferidos = () => {
   const navigate = useNavigate();
-  const [tarjetaHistorial, setTarjetaHistorial] = useState([]);
   const location = useLocation();
+  const [tarjetaHistorial, setTarjetaHistorial] = useState([]);
+  const [numeroTarjetaSeleccionada, setNumeroTarjetaSeleccionada] = useState('');
+  const [showModal, setShowModal] = useState({ type: null });
 
   useEffect(() => {
     obtenerTarjetaHistorial();
-  }, []);
+    // Obtener el número de tarjeta de los parámetros de la URL o del estado de location
+    const numeroTarjeta = location.state?.numeroTarjeta || 'No seleccionada';
+    setNumeroTarjetaSeleccionada(numeroTarjeta);
+  }, [location]);
 
   const obtenerTarjetaHistorial = (async () => {
     try {
@@ -43,8 +48,6 @@ const TarjetasCreditoDiferidos = () => {
       console.log(error);
     }
   })
-
-  const [showModal, setShowModal] = useState({ type: null });
 
   // Función para cerrar sesión
   const handleLogoutClick = () => {
@@ -82,7 +85,7 @@ const TarjetasCreditoDiferidos = () => {
 
       {/* Main Content */}
       <div className="main-content">
-        <Navbar titulo={"Diferidos de la tarjeta" + numeroTarjetaSeleccionada} />
+        <Navbar titulo={`Diferidos de la tarjeta ${numeroTarjetaSeleccionada}`} />
 
         {/* Diferidos Section */}
         <div className="diferidos-section">

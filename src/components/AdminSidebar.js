@@ -1,34 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/TarjetaCredito.css";
 
-export const Sidebar = (() => {
+export const AdminSidebar = () => {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
-
     const navigate = useNavigate();
-
-    const usuario = JSON.parse(localStorage.getItem('cliente'))
-    const tipoPersona = usuario.cliente.tipo;
-    const persona = tipoPersona == 'PER'
-        ? usuario.cliente.personaNatural
-        : usuario.cliente.personaJuridica
-        ;
-
-    const nombreMostrar = tipoPersona == 'PER'
-        ? persona.primerNombre + " " + persona.segundoApellido + " " + persona.primerApellido + " " + persona.segundoApellido
-        : persona.razonSocial
-        ;
-
-    const fechaISO = usuario.fechaUltimoIngreso;
-    const fecha = new Date(fechaISO);
-
-    const dia = fecha.getDate().toString().padStart(2, '0');
-    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-    const año = fecha.getFullYear();
-    const hora = fecha.getHours().toString().padStart(2, '0');
-    const minutos = fecha.getMinutes().toString().padStart(2, '0');
-    const segundos = fecha.getSeconds().toString().padStart(2, '0');
-
-    const fechaFormateada = `${dia}-${mes}-${año} ${hora}:${minutos}:${segundos}`;
 
     const handleLogoutClick = () => {
         setShowLogoutModal(true);
@@ -38,7 +14,7 @@ export const Sidebar = (() => {
         localStorage.removeItem("clienteId");
         localStorage.removeItem("cliente");
         setShowLogoutModal(false);
-        navigate("/login");
+        navigate("/admin");
     };
 
     const cancelLogout = () => {
@@ -71,22 +47,56 @@ export const Sidebar = (() => {
                     margin: '0.5rem 0',
                     fontWeight: 'bold',
                     textAlign: 'center'
-                }}>{nombreMostrar}</h2>
-                <p style={{
-                    fontSize: '0.8rem',
-                    color: '#e6e6e6',
-                    margin: '0.3rem 0'
-                }}>Último ingreso: {fechaFormateada}</p>
-                <button onClick={() => navigate("/cuentas")}>Cuentas</button>
-                <button onClick={() => navigate("/tarjetas-credito/principal")}>
-                    Tarjetas de Crédito
+                }}>Administrador</h2>
+                
+
+                {/* Botones administrativos */}
+                <button 
+                    onClick={() => navigate("/admin/clientes")}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        justifyContent: 'flex-start',
+                        padding: '0.8rem 1rem'
+                    }}
+                >
+                    <i className="fas fa-users"></i>
+                    Gestión de Clientes
                 </button>
+
+                <button 
+                    onClick={() => navigate("/admin/solicitar-tarjeta")}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        justifyContent: 'flex-start',
+                        padding: '0.8rem 1rem'
+                    }}
+                >
+                    <i className="fas fa-credit-card"></i>
+                    Solicitar Tarjetas
+                </button>
+
                 <hr className="sidebar-divider" />
-                <button className="logout-button" onClick={handleLogoutClick}>
+
+                <button 
+                    className="logout-button" 
+                    onClick={handleLogoutClick}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <i className="fas fa-sign-out-alt"></i>
                     Cerrar sesión
                 </button>
             </div>
 
+            {/* Modal de Cierre de Sesión */}
             {showLogoutModal && (
                 <div className="modal">
                     <div className="modal-content">
@@ -104,5 +114,7 @@ export const Sidebar = (() => {
                 </div>
             )}
         </>
-    )
-})
+    );
+};
+
+export default AdminSidebar; 

@@ -90,7 +90,12 @@ const Home = () => {
           </li>
         </ul>
 
-        <button className="btn-primary-nav">Banca Online</button>
+        <button 
+          className="btn-primary-nav"
+          onClick={() => navigate("/admin")}
+        >
+          Personal Banco
+        </button>
       </nav>
 
       {/* Header */}
