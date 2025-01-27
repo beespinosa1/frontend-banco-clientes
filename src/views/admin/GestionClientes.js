@@ -46,10 +46,10 @@ const GestionClientes = () => {
         try {
             let endpoint;
             if (tipo === "natural") {
-                endpoint = `http://localhost:8082/v1/personas-naturales/identificacion/${id}`;
+                endpoint = `http://18.118.93.180:80/v1/personas-naturales/identificacion/${id}`;
             } else {
                 // Para personas jurídicas, intentamos buscar por RUC
-                endpoint = `http://localhost:8082/v1/personas-juridicas/identificacion/${id}`;
+                endpoint = `http://18.118.93.180:80/v1/personas-juridicas/identificacion/${id}`;
             }
 
             const response = await fetch(endpoint);
@@ -81,8 +81,8 @@ const GestionClientes = () => {
         setLoadingClientes(true);
         try {
             const [naturalesResponse, juridicasResponse] = await Promise.all([
-                fetch('http://localhost:8082/v1/personas-naturales'),
-                fetch('http://localhost:8082/v1/personas-juridicas')
+                fetch('http://18.118.93.180:80/v1/personas-naturales'),
+                fetch('http://18.118.93.180:80/v1/personas-juridicas')
             ]);
 
             const naturales = await naturalesResponse.json();
