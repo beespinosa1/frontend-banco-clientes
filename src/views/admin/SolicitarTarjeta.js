@@ -18,8 +18,8 @@ const SolicitarTarjeta = () => {
 
         try {
             let endpoint = tipoCliente === 'natural' 
-                ? `http://localhost:8080/v1/personas-naturales/identificacion/${cedula}`
-                : `http://localhost:8080/v1/personas-juridicas/identificacion/${cedula}`;
+                ? `http://18.118.93.180:80/v1/personas-naturales/identificacion/${cedula}`
+                : `http://18.118.93.180:80/v1/personas-juridicas/identificacion/${cedula}`;
 
             const response = await fetch(endpoint);
             
@@ -40,7 +40,7 @@ const SolicitarTarjeta = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/v1/tarjetas/solicitudes', {
+            const response = await fetch('http://18.118.93.180:80/v1/tarjetas/solicitudes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

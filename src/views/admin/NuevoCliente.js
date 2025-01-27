@@ -129,7 +129,7 @@ const NuevoCliente = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:8082/v1/personas-naturales",
+        "http://18.118.93.180:80/v1/personas-naturales",
         {
           method: "POST",
           headers: {
@@ -166,7 +166,7 @@ const NuevoCliente = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:8082/v1/personas-juridicas",
+        "http://18.118.93.180:80/v1/personas-juridicas",
         {
           method: "POST",
           headers: {
