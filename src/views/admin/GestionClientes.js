@@ -8,6 +8,7 @@ const GestionClientes = () => {
     const [tipoCliente, setTipoCliente] = useState('');
     const [cedula, setCedula] = useState('');
     const [clienteEncontrado, setClienteEncontrado] = useState(null);
+    const [clientes, setClientes] = useState([]); // Nuevo estado para la lista de clientes
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -58,6 +59,31 @@ const GestionClientes = () => {
         }
     };
 
+    const obtenerClientes = async (tipo) => {
+        try {
+            let endpoint = tipo === 'natural' 
+                ? `http://localhost:8082/v1/personas-naturales`
+                : `http://localhost:8082/v1/personas-juridicas`;
+
+            const response = await fetch(endpoint);
+            
+            if (response.ok) {
+                const data = await response.json();
+                setClientes(data);
+            } else {
+                setError('Error al obtener la lista de clientes');
+            }
+        } catch (error) {
+            setError('Error de conexión');
+        }
+    };
+
+    useEffect(() => {
+        if (tipoCliente) {
+            obtenerClientes(tipoCliente);
+        }
+    }, [tipoCliente]);
+
     return (
         <div className="dashboard-container">
             <AdminSidebar />
@@ -80,7 +106,6 @@ const GestionClientes = () => {
                         </div>
                     )}
 
-                    {/* Selección de tipo de cliente */}
                     {!tipoCliente ? (
                         <div style={{
                             backgroundColor: 'white',
@@ -158,6 +183,7 @@ const GestionClientes = () => {
                                                 setCedula('');
                                                 setClienteEncontrado(null);
                                                 setError('');
+                                                setClientes([]);
                                             }}
                                             style={{
                                                 background: 'none',
@@ -384,12 +410,58 @@ const GestionClientes = () => {
                                     </div>
                                 </div>
                             )}
+
+                            {clienteEncontrado === null && clientes.length > 0 && (
+                                <div style={{
+                                    backgroundColor: 'white',
+                                    padding: '2rem',
+                                    borderRadius: '8px',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                    marginTop: '2rem'
+                                }}>
+                                    <h2 style={{ marginBottom: '1.5rem', color: '#333' }}>
+                                        Lista de Clientes {tipoCliente === 'natural' ? 'Naturales' : 'Jurídicos'}
+                                    </h2>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                        <thead>
+                                            <tr>
+                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>{tipoCliente === 'natural' ? 'Identificación' : 'RUC'}</th>
+                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>{tipoCliente === 'natural' ? 'Nombres' : 'Razón Social'}</th>
+                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>Email</th>
+                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {clientes.map(cliente => (
+                                                <tr key={cliente.id}>
+                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>{tipoCliente === 'natural' ? cliente.identificacion : cliente.ruc}</td>
+                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>
+                                                        {tipoCliente === 'natural' ? `${cliente.primerNombre} ${cliente.segundoNombre || ''} ${cliente.primerApellido} ${cliente.segundoApellido}` : cliente.razonSocial}
+                                                    </td>
+                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>{cliente.email}</td>
+                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>
+                                                        <span style={{
+                                                            padding: '0.25rem 0.5rem',
+                                                            borderRadius: '4px',
+                                                            backgroundColor: cliente.estado === 'Activo' ? '#28a745' : '#dc3545',
+                                                            color: 'white',
+                                                            fontSize: '0.8rem',
+                                                            marginLeft: '0.5rem'
+                                                        }}>
+                                                            {cliente.estado}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
             </div>
 
-            {/* Modal de confirmación para desactivar */}
             {showModal && (
                 <div className="modal">
                     <div className="modal-content">
@@ -399,7 +471,6 @@ const GestionClientes = () => {
                             <button 
                                 className="copy-button"
                                 onClick={() => {
-                                    // Aquí iría la lógica para desactivar
                                     setShowModal(false);
                                 }}
                             >
