@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { AdminSidebar } from '../../components/AdminSidebar';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { AdminSidebar } from "../../components/AdminSidebar";
 
 const GestionClientes = () => {
     const navigate = useNavigate();
@@ -8,39 +8,39 @@ const GestionClientes = () => {
     const [tipoCliente, setTipoCliente] = useState('');
     const [cedula, setCedula] = useState('');
     const [clienteEncontrado, setClienteEncontrado] = useState(null);
-    const [clientes, setClientes] = useState([]); // Nuevo estado para la lista de clientes
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    useEffect(() => {
-        // Si hay estado en la navegación, procesar la información
-        if (location.state) {
-            const { message, tipoCliente: tipo, identificacion } = location.state;
-            if (message) setSuccessMessage(message);
-            if (tipo) {
-                setTipoCliente(tipo);
-                if (identificacion) {
-                    setCedula(identificacion);
-                    // Buscar el cliente automáticamente
-                    buscarCliente(tipo, identificacion);
-                }
-            }
-            // Limpiar el estado de la navegación
-            window.history.replaceState({}, document.title);
+  useEffect(() => {
+    // Si hay estado en la navegación, procesar la información
+    if (location.state) {
+      const { message, tipoCliente: tipo, identificacion } = location.state;
+      if (message) setSuccessMessage(message);
+      if (tipo) {
+        setTipoCliente(tipo);
+        if (identificacion) {
+          setCedula(identificacion);
+          // Buscar el cliente automáticamente
+          buscarCliente(tipo, identificacion);
         }
-    }, [location]);
+      }
+      // Limpiar el estado de la navegación
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
-    const buscarCliente = async (tipo = tipoCliente, id = cedula) => {
-        if (!id.trim()) {
-            setError('Por favor, ingrese una identificación');
-            return;
-        }
+  const buscarCliente = async (tipo = tipoCliente, id = cedula) => {
+    if (!id.trim()) {
+      setError("Por favor, ingrese una identificación");
+      return;
+    }
 
-        try {
-            let endpoint = tipo === 'natural' 
-                ? `http://localhost:8082/v1/personas-naturales/identificacion/${id}`
-                : `http://localhost:8082/v1/personas-juridicas/identificacion/${id}`;
+    try {
+      let endpoint =
+        tipo === "natural"
+          ? `http://localhost:8082/v1/personas-naturales/identificacion/${id}`
+          : `http://localhost:8082/v1/personas-juridicas/identificacion/${id}`;
 
             const response = await fetch(endpoint);
             
@@ -59,53 +59,31 @@ const GestionClientes = () => {
         }
     };
 
-    const obtenerClientes = async (tipo) => {
-        try {
-            let endpoint = tipo === 'natural' 
-                ? `http://localhost:8082/v1/personas-naturales`
-                : `http://localhost:8082/v1/personas-juridicas`;
+  return (
+    <div className="dashboard-container">
+      <AdminSidebar />
 
-            const response = await fetch(endpoint);
-            
-            if (response.ok) {
-                const data = await response.json();
-                setClientes(data);
-            } else {
-                setError('Error al obtener la lista de clientes');
-            }
-        } catch (error) {
-            setError('Error de conexión');
-        }
-    };
+      <div className="main-content">
+        <div className="header">
+          <h1>Gestión de Clientes</h1>
+        </div>
 
-    useEffect(() => {
-        if (tipoCliente) {
-            obtenerClientes(tipoCliente);
-        }
-    }, [tipoCliente]);
+        <div style={{ padding: "2rem" }}>
+          {successMessage && (
+            <div
+              style={{
+                backgroundColor: "#d4edda",
+                color: "#155724",
+                padding: "1rem",
+                borderRadius: "4px",
+                marginBottom: "1rem",
+              }}
+            >
+              {successMessage}
+            </div>
+          )}
 
-    return (
-        <div className="dashboard-container">
-            <AdminSidebar />
-            
-            <div className="main-content">
-                <div className="header">
-                    <h1>Gestión de Clientes</h1>
-                </div>
-
-                <div style={{ padding: '2rem' }}>
-                    {successMessage && (
-                        <div style={{
-                            backgroundColor: '#d4edda',
-                            color: '#155724',
-                            padding: '1rem',
-                            borderRadius: '4px',
-                            marginBottom: '1rem'
-                        }}>
-                            {successMessage}
-                        </div>
-                    )}
-
+                    {/* Selección de tipo de cliente */}
                     {!tipoCliente ? (
                         <div style={{
                             backgroundColor: 'white',
@@ -183,7 +161,6 @@ const GestionClientes = () => {
                                                 setCedula('');
                                                 setClienteEncontrado(null);
                                                 setError('');
-                                                setClientes([]);
                                             }}
                                             style={{
                                                 background: 'none',
@@ -201,134 +178,198 @@ const GestionClientes = () => {
                                         </button>
                                     </div>
 
-                                    <div style={{
-                                        display: 'flex',
-                                        gap: '1rem',
-                                        alignItems: 'flex-end',
-                                        flexWrap: 'wrap'
-                                    }}>
-                                        <div style={{ flex: '1', minWidth: '200px', maxWidth: '300px' }}>
-                                            <label style={{
-                                                display: 'block',
-                                                marginBottom: '0.5rem',
-                                                color: '#666',
-                                                fontWeight: 'bold'
-                                            }}>
-                                                {tipoCliente === 'natural' ? 'Cédula de la Persona' : 'RUC de la Empresa'}
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder={tipoCliente === 'natural' ? "Ingrese la cédula..." : "Ingrese el RUC..."}
-                                                value={cedula}
-                                                onChange={(e) => setCedula(e.target.value)}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '0.75rem',
-                                                    borderRadius: '4px',
-                                                    border: '1px solid #ddd'
-                                                }}
-                                            />
-                                        </div>
-                                        <div style={{
-                                            display: 'flex',
-                                            gap: '1rem',
-                                            flexWrap: 'wrap'
-                                        }}>
-                                            <button
-                                                onClick={() => buscarCliente()}
-                                                style={{
-                                                    background: '#ff6b35',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    padding: '0.75rem 1.5rem',
-                                                    borderRadius: '4px',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.5rem',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                <i className="fas fa-search"></i>
-                                                Buscar
-                                            </button>
-                                            <button
-                                                onClick={() => navigate('/admin/clientes/nuevo', { 
-                                                    state: { tipoCliente }
-                                                })}
-                                                style={{
-                                                    background: '#28a745',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    padding: '0.75rem 1.5rem',
-                                                    borderRadius: '4px',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.5rem',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                <i className="fas fa-plus"></i>
-                                                Nuevo Cliente
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                {error && (
-                                    <p style={{ color: 'red', marginTop: '1rem', fontSize: '0.9rem' }}>
-                                        {error}
-                                    </p>
-                                )}
-                            </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      alignItems: "flex-end",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div
+                      style={{
+                        flex: "1",
+                        minWidth: "200px",
+                        maxWidth: "300px",
+                      }}
+                    >
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "0.5rem",
+                          color: "#666",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {tipoCliente === "natural"
+                          ? "Cédula de la Persona"
+                          : "RUC de la Empresa"}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={
+                          tipoCliente === "natural"
+                            ? "Ingrese la cédula..."
+                            : "Ingrese el RUC..."
+                        }
+                        value={cedula}
+                        onChange={(e) => setCedula(e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "0.75rem",
+                          borderRadius: "4px",
+                          border: "1px solid #ddd",
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <button
+                        onClick={() => buscarCliente()}
+                        style={{
+                          background: "#ff6b35",
+                          color: "white",
+                          border: "none",
+                          padding: "0.75rem 1.5rem",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        <i className="fas fa-search"></i>
+                        Buscar
+                      </button>
+                      <button
+                        onClick={() =>
+                          navigate("/admin/clientes/nuevo", {
+                            state: { tipoCliente },
+                          })
+                        }
+                        style={{
+                          background: "#28a745",
+                          color: "white",
+                          border: "none",
+                          padding: "0.75rem 1.5rem",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        <i className="fas fa-plus"></i>
+                        Nuevo Cliente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {error && (
+                  <p
+                    style={{
+                      color: "red",
+                      marginTop: "1rem",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {error}
+                  </p>
+                )}
+              </div>
 
-                            {/* Resultados de la búsqueda */}
-                            {clienteEncontrado && (
-                                <div style={{
-                                    backgroundColor: 'white',
-                                    padding: '2rem',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}>
-                                    <h2 style={{ marginBottom: '1.5rem', color: '#333' }}>
-                                        Información del Cliente {tipoCliente === 'natural' ? 'Natural' : 'Jurídico'}
-                                    </h2>
-                                    <div style={{
-                                        display: 'grid',
-                                        gap: '1.5rem',
-                                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))'
-                                    }}>
-                                        <div className="info-card" style={{
-                                            padding: '1.5rem',
-                                            backgroundColor: '#f8f9fa',
-                                            borderRadius: '8px'
-                                        }}>
-                                            <h3 style={{ color: '#666', marginBottom: '1rem' }}>Datos {tipoCliente === 'natural' ? 'Personales' : 'de la Empresa'}</h3>
-                                            <div style={{ display: 'grid', gap: '0.5rem' }}>
-                                                <p><strong>Identificación:</strong> {clienteEncontrado.identificacion}</p>
-                                                {tipoCliente === 'natural' ? (
-                                                    <>
-                                                        <p><strong>Nombres:</strong> {`${clienteEncontrado.primerNombre} ${clienteEncontrado.segundoNombre || ''}`}</p>
-                                                        <p><strong>Apellidos:</strong> {`${clienteEncontrado.primerApellido} ${clienteEncontrado.segundoApellido}`}</p>
-                                                    </>
-                                                ) : (
-                                                    <p><strong>Razón Social:</strong> {clienteEncontrado.razonSocial}</p>
-                                                )}
-                                                <p><strong>Email:</strong> {clienteEncontrado.email}</p>
-                                                <p><strong>Estado:</strong> 
-                                                    <span style={{
-                                                        padding: '0.25rem 0.5rem',
-                                                        borderRadius: '4px',
-                                                        backgroundColor: clienteEncontrado.estado === 'Activo' ? '#28a745' : '#dc3545',
-                                                        color: 'white',
-                                                        fontSize: '0.8rem',
-                                                        marginLeft: '0.5rem'
-                                                    }}>
-                                                        {clienteEncontrado.estado}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
+              {/* Resultados de la búsqueda */}
+              {clienteEncontrado && (
+                <div
+                  style={{
+                    backgroundColor: "white",
+                    padding: "2rem",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <h2 style={{ marginBottom: "1.5rem", color: "#333" }}>
+                    Información del Cliente{" "}
+                    {tipoCliente === "natural" ? "Natural" : "Jurídico"}
+                  </h2>
+                  <div
+                    style={{
+                      display: "grid",
+                      gap: "1.5rem",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(250px, 1fr))",
+                    }}
+                  >
+                    <div
+                      className="info-card"
+                      style={{
+                        padding: "1.5rem",
+                        backgroundColor: "#f8f9fa",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <h3 style={{ color: "#666", marginBottom: "1rem" }}>
+                        Datos{" "}
+                        {tipoCliente === "natural"
+                          ? "Personales"
+                          : "de la Empresa"}
+                      </h3>
+                      <div style={{ display: "grid", gap: "0.5rem" }}>
+                        <p>
+                          <strong>Identificación:</strong>{" "}
+                          {clienteEncontrado.identificacion}
+                        </p>
+                        {tipoCliente === "natural" ? (
+                          <>
+                            <p>
+                              <strong>Nombres:</strong>{" "}
+                              {`${clienteEncontrado.primerNombre} ${
+                                clienteEncontrado.segundoNombre || ""
+                              }`}
+                            </p>
+                            <p>
+                              <strong>Apellidos:</strong>{" "}
+                              {`${clienteEncontrado.primerApellido} ${clienteEncontrado.segundoApellido}`}
+                            </p>
+                            
+                          </>
+                        ) : (
+                          <p>
+                            <strong>Razón Social y Nombre Comercial:</strong>{" "}
+                            {`${clienteEncontrado.razonSocial} 
+                            ${clienteEncontrado.nombreComercial}`}
+                          </p>
+                        )}
+                        <p>
+                          <strong>Email:</strong> {clienteEncontrado.email}
+                        </p>
+                        <p>
+                          <strong>Estado:</strong>
+                          <span
+                            style={{
+                              padding: "0.25rem 0.5rem",
+                              borderRadius: "4px",
+                              backgroundColor:
+                                clienteEncontrado.estado === "Activo"
+                                  ? "#28a745"
+                                  : "#dc3545",
+                              color: "white",
+                              fontSize: "0.8rem",
+                              marginLeft: "0.5rem",
+                            }}
+                          >
+                            {clienteEncontrado.estado}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
 
                                         <div className="actions-card" style={{
                                             padding: '1.5rem',
@@ -410,58 +451,12 @@ const GestionClientes = () => {
                                     </div>
                                 </div>
                             )}
-
-                            {clienteEncontrado === null && clientes.length > 0 && (
-                                <div style={{
-                                    backgroundColor: 'white',
-                                    padding: '2rem',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                                    marginTop: '2rem'
-                                }}>
-                                    <h2 style={{ marginBottom: '1.5rem', color: '#333' }}>
-                                        Lista de Clientes {tipoCliente === 'natural' ? 'Naturales' : 'Jurídicos'}
-                                    </h2>
-                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                        <thead>
-                                            <tr>
-                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>{tipoCliente === 'natural' ? 'Identificación' : 'RUC'}</th>
-                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>{tipoCliente === 'natural' ? 'Nombres' : 'Razón Social'}</th>
-                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>Email</th>
-                                                <th style={{ border: '1px solid #ddd', padding: '0.5rem', textAlign: 'left' }}>Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {clientes.map(cliente => (
-                                                <tr key={cliente.id}>
-                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>{tipoCliente === 'natural' ? cliente.identificacion : cliente.ruc}</td>
-                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>
-                                                        {tipoCliente === 'natural' ? `${cliente.primerNombre} ${cliente.segundoNombre || ''} ${cliente.primerApellido} ${cliente.segundoApellido}` : cliente.razonSocial}
-                                                    </td>
-                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>{cliente.email}</td>
-                                                    <td style={{ border: '1px solid #ddd', padding: '0.5rem' }}>
-                                                        <span style={{
-                                                            padding: '0.25rem 0.5rem',
-                                                            borderRadius: '4px',
-                                                            backgroundColor: cliente.estado === 'Activo' ? '#28a745' : '#dc3545',
-                                                            color: 'white',
-                                                            fontSize: '0.8rem',
-                                                            marginLeft: '0.5rem'
-                                                        }}>
-                                                            {cliente.estado}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
                         </>
                     )}
                 </div>
             </div>
 
+            {/* Modal de confirmación para desactivar */}
             {showModal && (
                 <div className="modal">
                     <div className="modal-content">
@@ -471,6 +466,7 @@ const GestionClientes = () => {
                             <button 
                                 className="copy-button"
                                 onClick={() => {
+                                    // Aquí iría la lógica para desactivar
                                     setShowModal(false);
                                 }}
                             >
@@ -490,4 +486,4 @@ const GestionClientes = () => {
     );
 };
 
-export default GestionClientes; 
+export default GestionClientes;
