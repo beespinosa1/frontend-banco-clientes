@@ -38,8 +38,8 @@ const GestionClientes = () => {
 
         try {
             let endpoint = tipo === 'natural' 
-                ? `http://localhost:8080/v1/personas-naturales/identificacion/${id}`
-                : `http://localhost:8080/v1/personas-juridicas/identificacion/${id}`;
+                ? `http://localhost:8082/v1/personas-naturales/identificacion/${id}`
+                : `http://localhost:8082/v1/personas-juridicas/identificacion/${id}`;
 
             const response = await fetch(endpoint);
             

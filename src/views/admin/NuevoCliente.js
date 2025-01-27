@@ -70,7 +70,7 @@ const NuevoCliente = () => {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8080/v1/personas-naturales', {
+            const response = await fetch('http://localhost:8082/v1/personas-naturales', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
