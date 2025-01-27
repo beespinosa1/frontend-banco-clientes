@@ -34,11 +34,9 @@ const Login = () => {
         return;
 
       setPaso("CON");
-    } catch (er) {
-      const { data } = er;
-      const error = data.error;
-
-      setMgsError(error.mensaje);
+    } catch (error) {
+      const mensaje = error.response?.data?.mensaje || "Error al verificar el usuario";
+      setMgsError(mensaje);
       setShowModal(true);
     }
   };
@@ -64,11 +62,9 @@ const Login = () => {
       localStorage.setItem("cliente", JSON.stringify(datos));
       
       navigate('/PaginaPrincipal');
-    } catch (er) {
-      const { data } = er;
-      const error = data.error;
-
-      setMgsError(error.mensaje);
+    } catch (error) {
+      const mensaje = error.response?.data?.mensaje || "Error al iniciar sesión";
+      setMgsError(mensaje);
       setShowModal(true);
     }
   };

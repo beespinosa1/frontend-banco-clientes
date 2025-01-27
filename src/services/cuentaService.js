@@ -6,7 +6,8 @@ class CuentaService extends Service {
   }
 
   async listarCuentasCliente() {
-    const endpoint = this.endpoint + '?idCliente=' + localStorage.getItem("clienteId");
+    const usuario = JSON.parse(localStorage.getItem('cliente'));
+    const endpoint = this.endpoint + '?idCliente=' + usuario.clienteId;
 
     try {
       const response = await this.api.get(endpoint);
