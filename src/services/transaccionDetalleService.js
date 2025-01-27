@@ -2,7 +2,7 @@ import Service from "./service"
 
 class TransaccionDetalleService extends Service {
   constructor() {
-    super('transaccionDetalle')
+    super('v1/transaccionDetalle')
   }
 
   async listarTransaccionDetalles() {

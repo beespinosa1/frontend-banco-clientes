@@ -2,7 +2,7 @@ import Service from "./service";
 
 class TransTarjetaService extends Service {
   constructor() {
-    super("/transacciones/tarjeta");
+    super("/v1/transacciones/tarjeta");
   }
 
   async listarTransTarjetasCliente(id) {

@@ -25,7 +25,8 @@ const CuentasDetalleMovimientos = () => {
 
   const obtenerDetalleMovimientos = async () => {
     try {
-      const {datos} = await transCuentaService.listarTransCuentasCliente(id);
+      const datos = await transCuentaService.listarTransCuentasCliente(id);
+      console.log("Cuanta detalle movimientos");
       console.log(datos);
       setCuentaDetalles(datos);
     } catch (error) {

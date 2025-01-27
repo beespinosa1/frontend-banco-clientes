@@ -2,7 +2,7 @@ import Service from "./service"
 
 class TarjetaService extends Service {
   constructor() {
-    super('tarjetas')
+    super('v1/tarjetas')
   }
 
   async listarTarjetasCliente() {

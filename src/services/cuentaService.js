@@ -2,15 +2,16 @@ import Service from "./service"
 
 class CuentaService extends Service {
   constructor() {
-    super('cuentas')
+    super('v1/cuentas')
   }
 
   async listarCuentasCliente() {
-    const usuario = JSON.parse(localStorage.getItem('cliente'));
-    const endpoint = this.endpoint + '?idCliente=' + usuario.clienteId;
-
+    const endpoint = this.endpoint + '?idCliente=' + localStorage.getItem('clienteId');
+    console.log(endpoint);
     try {
       const response = await this.api.get(endpoint);
+      console.log("Respuesta endpoint");
+      console.log(response.data);
       return response.data;
     } catch (error) {
       if (!error.response)

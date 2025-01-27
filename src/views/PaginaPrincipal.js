@@ -23,7 +23,7 @@ const PaginaPrincipal = () => {
 
   const obtenerTarjetas = (async () => {
     try {
-      const { datos } = await tarjetaService.listarTarjetasCliente();
+      const datos = await tarjetaService.listarTarjetasCliente();
       setTarjetas(datos);
       
     } catch (error) {
@@ -33,7 +33,8 @@ const PaginaPrincipal = () => {
 
   const obtenerCuentas = async () => {
     try {
-      const { datos } = await cuentaService.listarCuentasCliente();
+      const datos  = await cuentaService.listarCuentasCliente();
+      console.log("Cuentas");
       console.log(datos);
       setCuentas(datos);
     } catch (error) {

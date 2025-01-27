@@ -21,7 +21,7 @@ const Cuentas = () => {
 
   const obtenerCuentas = async () => {
     try {
-      const { datos } = await cuentaService.listarCuentasCliente();
+      const datos  = await cuentaService.listarCuentasCliente();
       console.log(datos);
       setCuentas(datos);
     } catch (error) {
