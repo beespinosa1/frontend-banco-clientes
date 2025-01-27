@@ -1,12 +1,12 @@
 import Service from "./service"
 
-class CuentaService extends Service {
+class DiferidosService extends Service {
   constructor() {
-    super('cuentas')
+    super('diferidos')
   }
 
-  async listarCuentasCliente() {
-    const endpoint = this.endpoint + '?idCliente=' + localStorage.getItem("clienteId");
+  async listarDiferidosTransacciones() {
+    const endpoint = this.endpoint + '?idTransaccion=' + localStorage.getItem("idTransaccion");
 
     try {
       const response = await this.api.get(endpoint);
@@ -21,6 +21,6 @@ class CuentaService extends Service {
   }
 }
 
-const cuentaService = new CuentaService()
+const diferidosService = new DiferidosService()
 
-export default cuentaService;
+export default diferidosService;
