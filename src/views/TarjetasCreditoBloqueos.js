@@ -1,80 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ItemTarjeta } from "../components/ItemTarjetaBloqueos";
-import tarjetaService from "../services/tarjetaService";
 import "../styles/TarjetaCredito.css";
-
-import { Navbar } from "../components/Navbar";
-import { Sidebar } from "../components/Sidebar";
 
 const TarjetasCreditoBloqueos = () => {
   const navigate = useNavigate();
-  const [tarjetas, setTarjetas] = useState([]);
-  const [tarjetaBloquearId, setTarjetaBloquearId] = useState(null);
-  const [tarjetaActivarId, setTarjetaActivarId] = useState(null);
 
-  useEffect(() => {
-    obtenerTarjetas();
-  }, []);
-
-  const obtenerTarjetas = (async () => {
-    try {
-      const { datos } = await tarjetaService.listarTarjetasCliente();
-      setTarjetas(datos);
-    } catch (error) {
-      console.log(error);
-    }
-  })
+  // Objeto que contiene los datos de las tarjetas
+  const [tarjetas, setTarjetas] = useState([
+    {
+      tipo: "Mastercard",
+      numero: "2033300****",
+      porPagar: 250.0,
+      disponible: 2500.0,
+      bloqueada: false,
+    },
+    {
+      tipo: "Visa",
+      numero: "4123000****",
+      porPagar: 500.0,
+      disponible: 1500.0,
+      bloqueada: false,
+    },
+    {
+      tipo: "American Express",
+      numero: "1234567****",
+      porPagar: 700.0,
+      disponible: 1200.0,
+      bloqueada: false,
+    },
+  ]);
 
   const [showModal, setShowModal] = useState({ type: null, index: null });
-  const [showUnblockModal, setShowUnblockModal] = useState({ type: null, index: null });
 
   // Función para manejar el bloqueo de la tarjeta
-
-  const handleUnblockCard = (tarjetaId) => {
-    setTarjetaActivarId(tarjetaId);
-    setShowUnblockModal({ type: "block" });
+  const handleBlockCard = (index) => {
+    setShowModal({ type: "block", index });
   };
 
-  const handleBlockCard = (tarjetaId) => {
-    setTarjetaBloquearId(tarjetaId);
-    setShowModal({ type: "block" });
-  };
-
-  const confirmUnblock = async () => {
-    try {
-      const res = await tarjetaService.activarTarjeta(tarjetaActivarId);
-      setShowUnblockModal({ type: null });
-
-      alert("Tarjeta bloqueada exitosamente");
-
-      await obtenerTarjetas();
-    } catch (error) {
-      //
-    }
-  };
-
-  const confirmBlock = async () => {
-    try {
-      const res = await tarjetaService.bloquearTarjeta(tarjetaBloquearId);
-      setShowModal({ type: null });
-
-      alert("Tarjeta bloqueada exitosamente");
-
-      await obtenerTarjetas();
-    } catch (error) {
-      //
-    }
+  const confirmBlock = () => {
+    const updatedTarjetas = [...tarjetas];
+    updatedTarjetas[showModal.index].bloqueada = true;
+    setTarjetas(updatedTarjetas);
+    setShowModal({ type: null, index: null });
+    alert("La tarjeta ha sido bloqueada exitosamente.");
   };
 
   const cancelBlock = () => {
-    setTarjetaBloquearId(null);
-    setShowModal({ type: null });
-  };
-  
-  const cancelUnblock = () => {
-    setTarjetaActivarId(null);
-    setShowUnblockModal({ type: null });
+    setShowModal({ type: null, index: null });
   };
 
   // Función para cerrar sesión
@@ -94,15 +66,64 @@ const TarjetasCreditoBloqueos = () => {
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
-      <Sidebar />
+      <div className="sidebar">
+        <img
+          src="https://via.placeholder.com/80"
+          alt="Profile"
+          className="profile-image"
+        />
+        <h2>Juanito Estupiñan</h2>
+        <p>Último ingreso: 11-15-2024 10:03:44</p>
+        <button onClick={() => navigate("/cuentas")}>Cuentas</button>
+        <button onClick={() => navigate("/tarjetas-credito/principal")}>
+          Tarjetas de Crédito
+        </button>
+        <hr className="sidebar-divider" />
+        <button className="logout-button" onClick={handleLogoutClick}>
+          Cerrar sesión
+        </button>
+      </div>
 
       {/* Main Content */}
       <div className="main-content">
-        <Navbar titulo="Gestión de Bloqueos de Tarjeta" />
+        <div className="header">
+          <h1>Gestión de Bloqueos de Tarjeta</h1>
+          <div className="user-info">
+            <p>
+              <strong>Juanito Estupiñán</strong> Último ingreso: 11-15-2024
+              10:03:44
+            </p>
+          </div>
+        </div>
+
         {/* Bloqueos Section */}
         <div className="bloqueos-section">
           <div className="card-container">
-            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} handleBlockCard={() => handleBlockCard(tarjeta.id)} handleUnblockCard={() => handleUnblockCard(tarjeta.id)} key={index} />)}
+            {tarjetas.map((tarjeta, index) => (
+              <div key={index} className="bloqueos-card">
+                <div className="bloqueos-details">
+                  <h4 className="card-title">{tarjeta.tipo}</h4>
+                  <p className="card-number">{tarjeta.numero}</p>
+                </div>
+                <div className="bloqueos-actions">
+                  <p>
+                    <strong>Por Pagar: </strong>${tarjeta.porPagar.toFixed(2)}
+                  </p>
+                  <p>
+                    <strong>Disponible: </strong>${tarjeta.disponible.toFixed(2)}
+                  </p>
+                  <div className="action-buttons">
+                    <button
+                      className="action-button"
+                      onClick={() => handleBlockCard(index)}
+                      disabled={tarjeta.bloqueada}
+                    >
+                      {tarjeta.bloqueada ? "Tarjeta Bloqueada" : "Bloquear Tarjeta"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -118,23 +139,6 @@ const TarjetasCreditoBloqueos = () => {
                 Bloquear
               </button>
               <button className="close-button" onClick={cancelBlock}>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {showUnblockModal.type === "block" && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>¿Estás seguro?</h2>
-            <p>¿Quieres desbloquear esta tarjeta?</p>
-            <div className="modal-buttons">
-              <button className="copy-button" onClick={confirmUnblock}>
-                Desbloquear
-              </button>
-              <button className="close-button" onClick={cancelUnblock}>
                 Cancelar
               </button>
             </div>

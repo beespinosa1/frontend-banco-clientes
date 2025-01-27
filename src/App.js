@@ -13,17 +13,13 @@ import TarjetasCreditoBloqueos from './views/TarjetasCreditoBloqueos';
 import TarjetasCreditoCupos from './views/TarjetasCreditoCupos';
 import Password from './views/Password';
 import Register from './views/Register';
-import AdminDashboard from './views/admin/AdminDashboard';
-import GestionClientes from './views/admin/GestionClientes';
-import NuevoCliente from './views/admin/NuevoCliente';
-import SolicitarTarjeta from './views/admin/SolicitarTarjeta';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css'; //iconos
+
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Rutas del Cliente */}
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/loginEmpresa" element={<LoginEmpresa />} />
@@ -32,7 +28,7 @@ const App = () => {
         <Route path="/PaginaPrincipal" element={<PaginaPrincipal />} />
         <Route path="/cuentas" element={<PrivateRoute component={Cuentas} />} />
         <Route
-          path="/cuentas/detalle-movimientos/:id"
+          path="/cuentas/detalle-movimientos"
           element={<PrivateRoute component={CuentasDetalleMovimientos} />}
         />
         <Route
@@ -44,7 +40,7 @@ const App = () => {
           element={<PrivateRoute component={TarjetasCreditoDiferidos} />}
         />
         <Route
-          path="/tarjetas-credito/historial/:id"
+          path="/tarjetas-credito/historial"
           element={<PrivateRoute component={TarjetasCreditoHistoriales} />}
         />
         <Route
@@ -55,26 +51,21 @@ const App = () => {
           path="/tarjetas-credito/cupos"
           element={<PrivateRoute component={TarjetasCreditoCupos} />}
         />
-
-        {/* Rutas Administrativas */}
-        <Route path="/admin" element={<AdminRoute component={AdminDashboard} />} />
-        <Route path="/admin/clientes" element={<AdminRoute component={GestionClientes} />} />
-        <Route path="/admin/clientes/nuevo" element={<AdminRoute component={NuevoCliente} />} />
-        <Route path="/admin/solicitar-tarjeta" element={<AdminRoute component={SolicitarTarjeta} />} />
       </Routes>
     </Router>
   );
 };
 
+// const PrivateRoute = ({ component: Component }) => {
+//   const isAuthenticated = true; // Reemplaza con tu lógica real
+//   return isAuthenticated ? <Component /> : <Navigate to="/" />;
+// };
+
 const PrivateRoute = ({ component: Component }) => {
-  const isAuthenticated = localStorage.getItem('clienteId') !== null;
+  const isAuthenticated = true; // Reemplaza esto con tu lógica real de autenticación
+
   return isAuthenticated ? <Component /> : <Navigate to="/" />;
 };
 
-const AdminRoute = ({ component: Component }) => {
-  // Aquí deberías implementar la lógica para verificar si el usuario es un administrador
-  const isAdmin = true; // Reemplaza esto con tu lógica real de verificación de admin
-  return isAdmin ? <Component /> : <Navigate to="/admin" />;
-};
 
 export default App;
