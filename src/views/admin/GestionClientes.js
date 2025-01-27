@@ -360,11 +360,13 @@ const GestionClientes = () => {
                               <strong>Apellidos:</strong>{" "}
                               {`${clienteEncontrado.primerApellido} ${clienteEncontrado.segundoApellido}`}
                             </p>
+                            
                           </>
                         ) : (
                           <p>
-                            <strong>Razón Social:</strong>{" "}
-                            {clienteEncontrado.razonSocial}
+                            <strong>Razón Social y Nombre Comercial:</strong>{" "}
+                            {`${clienteEncontrado.razonSocial} 
+                            ${clienteEncontrado.nombreComercial}`}
                           </p>
                         )}
                         <p>
