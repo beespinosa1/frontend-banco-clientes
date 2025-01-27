@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_BACKEND_URL
 
 const verificarUsuario = async credentials => {
-    const url = baseURL + '/verificar-usuario'
+    const url = baseURL + '/v1/verificar-usuario'
 
     try {
         const { data } = await axios.post(url, credentials)
@@ -18,8 +18,8 @@ const verificarUsuario = async credentials => {
 }
 
 const ingresar = async credentials => {
-    const url = baseURL + '/iniciar-sesion'
-
+    const url = baseURL + '/v1/iniciar-sesion'
+    
     try {
         const { data } = await axios.post(url, credentials)
         return data
@@ -33,7 +33,7 @@ const ingresar = async credentials => {
 }
 
 const logout = async _ => {
-    const url = baseURL + '/logout'
+    const url = baseURL + '/v1s/logout'
     const token = localStorage.getItem('token')
 
     try {
