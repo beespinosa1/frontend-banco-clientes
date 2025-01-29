@@ -10,6 +10,7 @@ class TransTarjetaService extends Service {
 
     try {
       const response = await this.api.get(endpoint);
+      console.log("Transacciones de tarjeta");
       return response.data;
     } catch (error) {
       if (!error.response) throw error;

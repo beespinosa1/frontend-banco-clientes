@@ -18,7 +18,7 @@ const TarjetasCreditoPrincipal = () => {
 
   const obtenerTarjetas = (async () => {
     try {
-      const { datos } = await tarjetaService.listarTarjetasCliente();
+      const  datos  = await tarjetaService.listarTarjetasCliente();
       setTarjetas(datos);
       setIsLoading(false);
     } catch (error) {
@@ -58,7 +58,7 @@ const TarjetasCreditoPrincipal = () => {
           ) : (tarjetas && tarjetas.length > 0) ? (
             <div className="card-container">
               {/* Itera sobre las tarjetas obtenidas */}
-              {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} fechaCorte={tarjeta.fechaCorte} id={tarjeta.id} key={index} />)}
+              {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} fechaCorte={tarjeta.fechaCorte} id={tarjeta.id} key={index} franquicia={tarjeta.franquicia}/>)}
             </div>
           ) : (
             <p>No hay tarjetas disponibles.</p>

@@ -19,7 +19,7 @@ const TarjetasCreditoBloqueos = () => {
 
   const obtenerTarjetas = (async () => {
     try {
-      const { datos } = await tarjetaService.listarTarjetasCliente();
+      const  datos  = await tarjetaService.listarTarjetasCliente();
       setTarjetas(datos);
     } catch (error) {
       console.log(error);
@@ -102,7 +102,7 @@ const TarjetasCreditoBloqueos = () => {
         {/* Bloqueos Section */}
         <div className="bloqueos-section">
           <div className="card-container">
-            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} handleBlockCard={() => handleBlockCard(tarjeta.id)} handleUnblockCard={() => handleUnblockCard(tarjeta.id)} key={index} />)}
+            {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} estado={tarjeta.estado} franquicia={tarjeta.franquicia} handleBlockCard={() => handleBlockCard(tarjeta.id)} handleUnblockCard={() => handleUnblockCard(tarjeta.id)} key={index} />)}
           </div>
         </div>
       </div>
