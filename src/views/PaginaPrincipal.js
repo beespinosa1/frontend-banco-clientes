@@ -70,7 +70,7 @@ const PaginaPrincipal = () => {
       
         {/* Tarjetas Section */}
         <h2>Tarjetas de Crédito</h2>
-        {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} key={index} />)}
+        {tarjetas.map((tarjeta, index) => <ItemTarjeta numero={tarjeta.numero} cupoAprobado={tarjeta.cupoAprobado} cupoDisponible={tarjeta.cupoDisponible} key={index} franquicia={tarjeta.franquicia}/>)}
       </div>
 
       {/* Modal de Cerrar Sesión */}

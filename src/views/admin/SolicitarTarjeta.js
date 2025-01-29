@@ -9,6 +9,8 @@ const SolicitarTarjeta = () => {
     const [clienteEncontrado, setClienteEncontrado] = useState(null);
     const [tipoTarjeta, setTipoTarjeta] = useState('');
     const [error, setError] = useState('');
+    const [cupo, setCupo] = useState('');
+    const [diaCorte, setDiaCorte] = useState('');
 
     const buscarCliente = async () => {
         if (!cedula.trim()) {
@@ -18,8 +20,8 @@ const SolicitarTarjeta = () => {
 
         try {
             let endpoint = tipoCliente === 'natural' 
-                ? `http://18.118.93.180:80/v1/personas-naturales/identificacion/${cedula}`
-                : `http://18.118.93.180:80/v1/personas-juridicas/identificacion/${cedula}`;
+                ? `http://3.144.89.85:80/v1/personas-naturales/identificacion/${cedula}`
+                : `http://3.144.89.85:80/v1/personas-juridicas/identificacion/${cedula}`;
 
             const response = await fetch(endpoint);
             
@@ -39,21 +41,46 @@ const SolicitarTarjeta = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validaciones
+        if (!cupo || isNaN(cupo) || cupo <= 0) {
+            setError('Por favor, ingrese un cupo válido');
+            return;
+        }
+
+        if (!diaCorte || isNaN(diaCorte) || diaCorte < 1 || diaCorte > 31) {
+            setError('Por favor, ingrese un día de corte válido (1-31)');
+            return;
+        }
+
+        // Crear el objeto de datos
+        const datosEnvio = {
+            clienteId: clienteEncontrado.id,
+            franquicia: tipoTarjeta,
+            limiteCredito: parseFloat(cupo),
+            corte: parseInt(diaCorte)
+        };
+
+        // Mostrar el JSON que se enviará
+        console.log('Datos a enviar:', JSON.stringify(datosEnvio, null, 2));
+
         try {
-            const response = await fetch('http://18.118.93.180:80/v1/tarjetas/solicitudes', {
+            const response = await fetch('http://3.144.89.85:80/v1/tarjetas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    clienteId: clienteEncontrado.id,
-                    tipoCliente: tipoCliente,
-                    tipoTarjeta: tipoTarjeta
-                })
+                body: JSON.stringify(datosEnvio)
             });
 
             if (response.ok) {
-                navigate('/admin/clientes');
+                navigate('/admin/clientes', {
+                    state: { 
+                        message: 'Tarjeta Creada Exitosamente',
+                        tipoCliente: tipoCliente,
+                        identificacion: cedula
+                    }
+                });
             } else {
                 const data = await response.json();
                 setError(data.message || 'Error al solicitar la tarjeta');
@@ -276,7 +303,8 @@ const SolicitarTarjeta = () => {
                                             <div style={{
                                                 display: 'grid',
                                                 gridTemplateColumns: 'repeat(2, 1fr)',
-                                                gap: '1rem'
+                                                gap: '1rem',
+                                                marginBottom: '2rem'
                                             }}>
                                                 <button
                                                     type="button"
@@ -314,6 +342,76 @@ const SolicitarTarjeta = () => {
                                                     <i className="fab fa-cc-mastercard" style={{ fontSize: '2rem', color: '#eb001b' }}></i>
                                                     <span style={{ fontWeight: 'bold', color: '#333' }}>Mastercard</span>
                                                 </button>
+                                            </div>
+
+                                            {/* Campos de Cupo y Día de Corte */}
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: '2rem',
+                                                marginTop: '2rem',
+                                                marginBottom: '2rem'
+                                            }}>
+                                                <div style={{
+                                                    backgroundColor: '#f8f9fa',
+                                                    padding: '1.5rem',
+                                                    borderRadius: '8px'
+                                                }}>
+                                                    <label style={{
+                                                        display: 'block',
+                                                        marginBottom: '1rem',
+                                                        color: '#666',
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        Cupo Aprobado *
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={cupo}
+                                                        onChange={(e) => setCupo(e.target.value)}
+                                                        placeholder="Ingrese el cupo"
+                                                        min="0"
+                                                        step="0.01"
+                                                        required
+                                                        style={{
+                                                            width: '100%',
+                                                            padding: '0.75rem',
+                                                            borderRadius: '4px',
+                                                            border: '1px solid #ddd',
+                                                            backgroundColor: 'white'
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div style={{
+                                                    backgroundColor: '#f8f9fa',
+                                                    padding: '1.5rem',
+                                                    borderRadius: '8px'
+                                                }}>
+                                                    <label style={{
+                                                        display: 'block',
+                                                        marginBottom: '1rem',
+                                                        color: '#666',
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        Día de Corte *
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={diaCorte}
+                                                        onChange={(e) => setDiaCorte(e.target.value)}
+                                                        placeholder="Ingrese el día (1-31)"
+                                                        min="1"
+                                                        max="31"
+                                                        required
+                                                        style={{
+                                                            width: '100%',
+                                                            padding: '0.75rem',
+                                                            borderRadius: '4px',
+                                                            border: '1px solid #ddd',
+                                                            backgroundColor: 'white'
+                                                        }}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
 

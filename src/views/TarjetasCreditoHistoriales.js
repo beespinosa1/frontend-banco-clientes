@@ -17,7 +17,7 @@ const TarjetasCreditoHistoriales = () => {
   const [showModal, setShowModal] = useState(false);
   const [numeroTarjetaSeleccionada, setNumeroTarjetaSeleccionada] = useState("")
 
-  const { id } = useParams();
+  const {id}  = useParams();
 
   useEffect(() => {
     obtenerTarjetaHistorial();
@@ -25,7 +25,7 @@ const TarjetasCreditoHistoriales = () => {
 
   const obtenerTarjetaHistorial = (async () => {
     try {
-      const { datos } = await transTarjetaService.listarTransTarjetasCliente(id);
+      const datos  = await transTarjetaService.listarTransTarjetasCliente(id);
       console.log(datos);
       
       // const { datosDetalle } = await transaccionDetalleService.listarTransaccionDetalles();
@@ -41,7 +41,7 @@ const TarjetasCreditoHistoriales = () => {
       //   };
       // });
       // setTarjetaHistorial(historialConDetalles);
-      setTarjetaHistorial(datos);
+        setTarjetaHistorial(datos);
     } catch (error) {
       console.log(error);
     }
@@ -68,15 +68,15 @@ const TarjetasCreditoHistoriales = () => {
         <Navbar titulo={"Historial de Pagos de la tarjeta" + numeroTarjetaSeleccionada} />
 
         <div className="diferidos-section">
-          <div className="card-container">
+            <div className="card-container">
             {tarjetaHistorial.map((tarjetaHistorial, index) =>
-              <ItemTarjeta
+                <ItemTarjeta
                 historial={tarjetaHistorial}
-                key={index}
-              />
+                  key={index}
+                />
             )}
 
-          </div>
+            </div>
         </div>
       </div>
 
