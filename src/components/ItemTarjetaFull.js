@@ -11,6 +11,22 @@ export const ItemTarjeta = (( {numero, cupoAprobado, cupoDisponible, fechaCorte,
         return numero.substring(0, 4) + 'XXXXXXXXXXXX';
     };
 
+    // Función para formatear la fecha de corte con el mes actual
+    const formatearFechaCorte = (dia) => {
+        if (!dia) return 'N/A';
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const fecha = new Date();
+        const diaActual = fecha.getDate();
+        let mesIndex = fecha.getMonth();
+
+        // Si el día de corte ya pasó este mes, mostrar el siguiente mes
+        if (diaActual >= dia) {
+            mesIndex = (mesIndex + 1) % 12; // Usar módulo 12 para volver a enero si estamos en diciembre
+        }
+
+        return `${dia} de ${meses[mesIndex]}`;
+    };
+
     return (
         <div className="diferidos-card">
             <div className="diferidos-details">
@@ -32,7 +48,7 @@ export const ItemTarjeta = (( {numero, cupoAprobado, cupoDisponible, fechaCorte,
                 </p>
                 <p>
                     <strong>Fecha de Corte: </strong>
-                    {fechaCorte || "N/A"}
+                    {formatearFechaCorte(fechaCorte)}
                 </p>
                 <div className="action-buttons">
                     <button
