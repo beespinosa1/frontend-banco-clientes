@@ -212,7 +212,6 @@ const NuevoCliente = () => {
     }
   };
 
-  // Agregar función para buscar persona por identificación
   const buscarPersonaPorIdentificacion = async (identificacion) => {
     try {
       const response = await fetch(
