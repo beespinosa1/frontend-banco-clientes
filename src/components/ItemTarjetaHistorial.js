@@ -19,6 +19,9 @@ export const ItemTarjeta = (({ historial }) => {
                 <p>
                     Descripción: <strong>{historial.detalleTransaccion.descripcion}</strong>
                 </p>
+                <p>
+                    Cuenta Destino: <strong>{historial.detalleTransaccion.cuentaDestino}</strong>
+                </p>
             </div>
         </div>
     );
