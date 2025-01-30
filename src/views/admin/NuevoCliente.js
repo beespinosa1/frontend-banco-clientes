@@ -170,16 +170,15 @@ const NuevoCliente = () => {
 
     setLoading(true);
     try {
-      // Primero buscar la persona natural por identificación
       const personaNatural = await buscarPersonaPorIdentificacion(
         formDataJuridico.identificacionRepresentante
       );
 
-      // Crear objeto con datos para enviar
+
       const datosJuridicos = {
         ...formDataJuridico,
-        personaNaturalId: personaNatural.id, // Usar el ID obtenido de la búsqueda
-        identificacionRepresentante: undefined // Remover este campo antes de enviar
+        personaNaturalId: personaNatural.id,
+        identificacionRepresentante: undefined
       };
 
       const response = await fetch(
