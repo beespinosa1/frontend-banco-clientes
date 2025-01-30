@@ -19,11 +19,12 @@ const NuevoCliente = () => {
     email: "",
     numeroTelefonico: "",
     fechaNacimiento: "",
+    ingresoMensual: "",
   });
 
   // PERSONA JURIDICA
   const [formDataJuridico, setFormDataJuridico] = useState({
-    personaNaturalId: "",
+    identificacionRepresentante: "",
     ruc: "",
     nombreComercial: "",
     razonSocial: "",
@@ -86,12 +87,16 @@ const NuevoCliente = () => {
       setError("La fecha de nacimiento es obligatoria");
       return false;
     }
+    if (!formData.ingresoMensual || formData.ingresoMensual <= 0) {
+      setError("El ingreso mensual es obligatorio y debe ser mayor a 0");
+      return false;
+    }
     return true;
   };
 
   const validarFormularioJuridico = () => {
-    if (!formDataJuridico.personaNaturalId) {
-      setError("El id es obligatorio");
+    if (!formDataJuridico.identificacionRepresentante) {
+      setError("La identificación del representante legal es obligatoria");
       return false;
     }
     if (!formDataJuridico.ruc) {
@@ -165,6 +170,18 @@ const NuevoCliente = () => {
 
     setLoading(true);
     try {
+      // Primero buscar la persona natural por identificación
+      const personaNatural = await buscarPersonaPorIdentificacion(
+        formDataJuridico.identificacionRepresentante
+      );
+
+      // Crear objeto con datos para enviar
+      const datosJuridicos = {
+        ...formDataJuridico,
+        personaNaturalId: personaNatural.id, // Usar el ID obtenido de la búsqueda
+        identificacionRepresentante: undefined // Remover este campo antes de enviar
+      };
+
       const response = await fetch(
         "http://3.144.89.85:80/v1/personas-juridicas",
         {
@@ -172,26 +189,40 @@ const NuevoCliente = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formDataJuridico),
+          body: JSON.stringify(datosJuridicos),
         }
       );
 
       if (response.ok) {
         navigate("/admin/clientes", {
           state: {
-            message: "Cliente juridico creado exitosamente",
-            tipoCliente: "natural",
-            //identificacion: formDataJuridico.identificacion,
+            message: "Cliente jurídico creado exitosamente",
+            tipoCliente: "juridica",
           },
         });
       } else {
         const data = await response.json();
-        setError(data.message || "Error al crear el cliente Juridico");
+        setError(data.message || "Error al crear el cliente Jurídico");
       }
     } catch (error) {
-      setError("Error de conexión");
+      setError(error.message || "Error de conexión");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Agregar función para buscar persona por identificación
+  const buscarPersonaPorIdentificacion = async (identificacion) => {
+    try {
+      const response = await fetch(
+        `http://3.144.89.85:80/v1/personas-naturales/identificacion/${identificacion}`
+      );
+      if (!response.ok) {
+        throw new Error("No se encontró la persona");
+      }
+      return await response.json();
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -458,6 +489,34 @@ const NuevoCliente = () => {
                         }}
                       />
                     </div>
+
+                    <div>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "0.5rem",
+                          color: "#666",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Ingreso Mensual *
+                      </label>
+                      <input
+                        type="number"
+                        name="ingresoMensual"
+                        value={formData.ingresoMensual}
+                        onChange={handleInputChange}
+                        required
+                        min="0"
+                        step="0.01"
+                        style={{
+                          width: "100%",
+                          padding: "0.75rem",
+                          borderRadius: "4px",
+                          border: "1px solid #ddd",
+                        }}
+                      />
+                    </div>
                   </div>
 
                   <div
@@ -697,12 +756,12 @@ const NuevoCliente = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        ID PERSONA*
+                        Identificación del Representante Legal *
                       </label>
                       <input
-                        type="number"
-                        name="personaNaturalId"
-                        value={formDataJuridico.personaNaturalId}
+                        type="text"
+                        name="identificacionRepresentante"
+                        value={formDataJuridico.identificacionRepresentante}
                         onChange={handleInputChangeJuridico}
                         required
                         maxLength="13"
