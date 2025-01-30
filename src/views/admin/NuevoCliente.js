@@ -54,6 +54,7 @@ const NuevoCliente = () => {
     }));
   };
 
+  //PERSONA NATURAL
   const validarFormulario = () => {
     if (!formData.tipoIdentificacion) {
       setError("El tipo de identificación es obligatorio");
@@ -94,6 +95,7 @@ const NuevoCliente = () => {
     return true;
   };
 
+  //PERSONA JURIDICA
   const validarFormularioJuridico = () => {
     if (!formDataJuridico.identificacionRepresentante) {
       setError("La identificación del representante legal es obligatoria");
